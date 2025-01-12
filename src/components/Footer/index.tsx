@@ -1,23 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import Image from "next/image";
 
 // import seal_payment from '/';
 // import seal_security from '';
 // import seal_shipping_correios from '';
 // import seal_shipping_jadlog from 'seals/seal_shipping_jadlog.png';
-import Image from "next/image";
-import { api } from "@/services/api";
-
-const getCategories = async () => {
-  const response = await api.get("products/categories");
-  return response.data;
-};
 
 const Footer = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
-  });
   return (
     <footer className="bg-white w-full min-h-[400px] py-8 md:py-12">
       <div className="mx-3 md:container md:mx-auto overflow-x-hidden flex flex-col gap-10">
@@ -65,21 +53,7 @@ const Footer = () => {
               Categorias
             </span>
             <ul className="flex flex-col gap-2 items-center md:items-start">
-              {isLoading || true ? (
-                <p className="text-base text-zinc-800">Carregando ...</p>
-              ) : (
-                <>
-                  {data.map((category: string, index: number) => (
-                    <Link
-                      key={index}
-                      href={`/category/${category}`}
-                      className="capitalize text-base font-normal text-zinc-800"
-                    >
-                      {category}
-                    </Link>
-                  ))}
-                </>
-              )}
+              Loading ...
             </ul>
           </div>
 

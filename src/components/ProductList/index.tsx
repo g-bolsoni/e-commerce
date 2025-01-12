@@ -38,7 +38,7 @@ export function ProductList() {
             if (index > 4) return;
             return (
               <div className="list-products" key={index}>
-                <span className="list_title flex w-full flex-col items-center my-4 font-bold text-xl">
+                <span className="list_title flex w-full flex-col items-center my-4 font-bold text-lg lg:text-xl">
                   {list.name}
                 </span>
                 <div className="products w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-items-center lg:justify-items-center gap-16 md:gap-16 px-4 py-4 md:px-0">
