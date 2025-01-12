@@ -1,24 +1,34 @@
-"use client"
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+"use client";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/services/queryClient";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
-import Header from '@/components/Header';
-import { CartProvider } from '@/hooks/useCart';
+import Header from "@/components/Header";
+import { CartProvider } from "@/hooks/useCart";
+import { useEffect } from "react";
+import { tokenApi } from "@/services/api";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+interface IChildren {
+  children: React.ReactNode;
+}
+export default function RootLayout({ children }: IChildren) {
+  useEffect(() => {
+    const getApiToken = async () => {
+      const apiToken = await tokenApi();
+      if (apiToken) localStorage.setItem("apiToken", apiToken);
+    };
+
+    getApiToken();
+  }, []);
+
   return (
     <html lang="en">
       <body>
@@ -37,6 +47,5 @@ export default function RootLayout({
         </QueryClientProvider>
       </body>
     </html>
-
-  )
+  );
 }
