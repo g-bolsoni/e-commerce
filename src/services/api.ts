@@ -15,7 +15,15 @@ export const tokenApi = async () => {
     password: "MxSit2ZQySeAiiTCRLs8BzPDI5rYkMXc1FjJXAZ",
   });
 
-  if (response.status != 200) return "";
+  if (response.status != 200) {
+    return {
+      success: "false",
+      data: {
+        authorization: "",
+        date_expire: "",
+      },
+    };
+  }
 
-  return response.data.data.authorization;
+  return response.data.data;
 };

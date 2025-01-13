@@ -22,11 +22,25 @@ interface IChildren {
 export default function RootLayout({ children }: IChildren) {
   useEffect(() => {
     const getApiToken = async () => {
-      const apiToken = await tokenApi();
-      if (apiToken) localStorage.setItem("apiToken", apiToken);
+      const { authorization, date_expire } = await tokenApi();
+
+      if (!authorization) return;
+
+      console.log("chamou");
+
+      localStorage.setItem("apiToken", authorization);
+      localStorage.setItem("apiTokenExpiration", date_expire);
     };
 
-    getApiToken();
+    if (localStorage.getItem("apiTokenExpiration")) {
+      const now = new Date();
+      const date = localStorage.getItem("apiTokenExpiration");
+      const expirationDate = new Date(date);
+
+      if (now > expirationDate) {
+        getApiToken();
+      }
+    }
   }, []);
 
   return (
