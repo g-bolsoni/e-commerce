@@ -17,13 +17,40 @@ export const tokenApi = async () => {
 
   if (response.status != 200) {
     return {
-      success: "false",
-      data: {
-        authorization: "",
-        date_expire: "",
-      },
+      authorization: "",
+      date_expire: "",
     };
   }
 
   return response.data.data;
+};
+
+export const customerLogin = async (email: string, password: string) => {
+  if (!localStorage.getItem("apiToken")) return false;
+
+  const token = localStorage.getItem("apiToken");
+
+  const response = await api.post(
+    "customer/login",
+    {
+      email,
+      password,
+    },
+    {
+      headers: {
+        authorization: token,
+      },
+    }
+  );
+
+  if (response.data.success == "false") {
+    console.log(response.data);
+    
+    return response.data;
+  }
+
+
+  
+
+  console.log(JSON.stringify(response.data.data));
 };

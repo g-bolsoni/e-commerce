@@ -19,10 +19,14 @@ const inter = Inter({ subsets: ["latin"] });
 interface IChildren {
   children: React.ReactNode;
 }
+interface ITokenApi {
+  authorization: string;
+  date_expire: string;
+}
 export default function RootLayout({ children }: IChildren) {
   useEffect(() => {
     const getApiToken = async () => {
-      const { authorization, date_expire } = await tokenApi();
+      const { authorization, date_expire }: ITokenApi = await tokenApi();
 
       if (!authorization) return;
 
@@ -32,14 +36,17 @@ export default function RootLayout({ children }: IChildren) {
       localStorage.setItem("apiTokenExpiration", date_expire);
     };
 
-    if (localStorage.getItem("apiTokenExpiration")) {
+    const apiTokenExpiration = localStorage.getItem("apiTokenExpiration");
+
+    if (apiTokenExpiration) {
       const now = new Date();
-      const date = localStorage.getItem("apiTokenExpiration");
-      const expirationDate = new Date(date);
+      const expirationDate = new Date(apiTokenExpiration);
 
       if (now > expirationDate) {
         getApiToken();
       }
+    } else {
+      getApiToken();
     }
   }, []);
 
