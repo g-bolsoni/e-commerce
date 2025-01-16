@@ -11,8 +11,8 @@ export const api = axios.create({
 
 export const tokenApi = async () => {
   const response = await api.post<GetToken>("getToken", {
-    username: "lojademo_vieiragv",
-    password: "MxSit2ZQySeAiiTCRLs8BzPDI5rYkMXc1FjJXAZ",
+    username: "mydevsto_giovane1",
+    password: "YV8b8Dat8W0FAqKNW20QFoAUvCdETgG6ySk82Aa",
   });
 
   if (response.status != 200) {
@@ -44,13 +44,8 @@ export const customerLogin = async (email: string, password: string) => {
   );
 
   if (response.data.success == "false") {
-    console.log(response.data);
-    
     return response.data;
   }
 
-
-  
-
-  console.log(JSON.stringify(response.data.data));
+  return response.data.data;
 };

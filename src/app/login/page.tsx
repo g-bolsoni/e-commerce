@@ -13,19 +13,28 @@ export default function Login() {
     }
 
     const result = await customerLogin(email, password);
+
+    if (result.success == "false") {
+      console.error("Failed to load customer data");
+      console.error(result.error);
+    }
+
+    localStorage.setItem("customer_info", JSON.stringify(result));
+    // toast avisando o sucesso
+    // redirecionar para a página de minha conta
   };
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-xl font-bold tracking-tight text-primary-900">
+        <h2 className="mt-6 text-center text-base md:text-lg font-bold tracking-tight text-primary-900">
           Faça login em sua conta
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-          <form action={handleLogin} method="POST" className="space-y-6">
+          <form action={handleLogin} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
