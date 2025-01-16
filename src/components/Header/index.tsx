@@ -1,12 +1,8 @@
-import {
-  MdMenu,
-  MdOutlinePerson,
-  MdOutlineShoppingBag,
-  MdSearch,
-} from "react-icons/md";
+import { MdMenu, MdOutlinePerson, MdOutlineShoppingBag } from "react-icons/md";
 
 import Image from "next/image";
 import { Categories } from "../Categories";
+import { Search } from "../Search";
 
 const Header = () => {
   return (
@@ -40,15 +36,7 @@ const Header = () => {
         {/* Icones */}
 
         <ul className="css-icons justify-center items-center gap-x-2xs flex">
-          <li className="search w-6 h-6 justify-start items-start flex relative fill-white md:fill-black">
-            <button
-              className="js-search_click"
-              type="button"
-              aria-label="Search"
-            >
-              <MdSearch size={24} color="#000" />
-            </button>
-          </li>
+          <Search />
           <li className="w-6 h-6 flex justify-start items-start relative md:fill-black">
             <a
               href="/login"
