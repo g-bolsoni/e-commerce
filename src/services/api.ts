@@ -3,7 +3,7 @@ import axios from "axios";
 
 // // let baseUrl = "http://localhost:3333";
 // // let baseUrl = "https://fakestoreapi.com";
-let baseUrl = "https://api.irroba.com.br/v1";
+let baseUrl = "https://sandbox.irroba.com.br/v1";
 
 export const api = axios.create({
   baseURL: baseUrl,
