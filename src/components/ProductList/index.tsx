@@ -18,7 +18,7 @@ export const loadProducts = async () => {
     },
   });
 
-  if (response.status != 200) return "";
+  if (response.status != 200) return [];
 
   return response.data.data;
 };
