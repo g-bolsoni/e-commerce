@@ -1,4 +1,4 @@
-export interface ProductList {
+export interface IProductList {
   success: string;
   pagination: Pagination;
   data: ProductListInfo[];
