@@ -7,7 +7,6 @@ import "./globals.css";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { CartProvider } from "@/hooks/useCart";
 import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,14 +21,12 @@ export default function RootLayout({ children }: IChildren) {
       <body className={inter.className}>
         <QueryClientProvider client={queryClient}>
           <TokenProvider>
-            <CartProvider>
-              <div className="mx-3 md:container md:mx-auto overflow-x-hidden">
-                <Header />
-                {children}
-                <Newsletter />
-              </div>
-              <Footer />
-            </CartProvider>
+            <div className="mx-3 md:container md:mx-auto overflow-x-hidden">
+              <Header />
+              {children}
+              <Newsletter />
+            </div>
+            <Footer />
           </TokenProvider>
         </QueryClientProvider>
         <ToastContainer />
