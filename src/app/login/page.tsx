@@ -3,6 +3,7 @@
 import { useToken } from "@/hooks/TokenProvider";
 import { api } from "@/services/api";
 import { Erica_One } from "next/font/google";
+import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface ICustomerlogin {
@@ -35,6 +36,7 @@ export default function Login() {
 
     localStorage.setItem("customer_info", JSON.stringify(result));
     toast.success("Login efeituado com sucesso!");
+    redirect("/minha-conta");
   };
 
   return (
