@@ -1,27 +1,40 @@
 "use client";
 
-import { customerLogin } from "@/services/api";
+import { useToken } from "@/hooks/TokenProvider";
+import { api } from "@/services/api";
+import { Erica_One } from "next/font/google";
+import { toast } from "react-toastify";
+
+interface ICustomerlogin {
+  email: string;
+  password: string;
+  token: string | null;
+}
 
 export default function Login() {
+  const { token } = useToken();
+
   const handleLogin = async (formData: FormData) => {
     const email = formData.get("email");
     const password = formData.get("password");
 
     if (typeof email !== "string" || typeof password !== "string") {
       console.error("Email or password is invalid");
+      toast.error("Email ou senha é inválido");
       return;
     }
 
-    const result = await customerLogin(email, password);
+    const result = await customerLogin({ email, password, token });
 
     if (result.success == "false") {
       console.error("Failed to load customer data");
       console.error(result.error);
+      toast.error(result.error);
+      return;
     }
 
     localStorage.setItem("customer_info", JSON.stringify(result));
-    // toast avisando o sucesso
-    // redirecionar para a página de minha conta
+    toast.success("Login efeituado com sucesso!");
   };
 
   return (
@@ -198,3 +211,36 @@ export default function Login() {
     </div>
   );
 }
+
+const customerLogin = async ({ email, password, token }: ICustomerlogin) => {
+  if (!token)
+    return {
+      success: "false",
+      error: "Enviar o token para a realizar a requisição",
+    };
+
+  try {
+    const response = await api.post(
+      "customer/login",
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+
+    if (response.data.success == "false") return response.data;
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Erro ao carregar categorias:", error);
+    return {
+      success: "false",
+      error: error,
+    };
+  }
+};
