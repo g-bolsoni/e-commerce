@@ -1,19 +1,15 @@
 "use client";
 
 import { useToken } from "@/hooks/TokenProvider";
-import { api } from "@/services/api";
 import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
-
-interface ICustomerlogin {
-  email: string;
-  password: string;
-  token: string | null;
-}
 
 export default function Login() {
   const { token } = useToken();
+  const searchParams = useSearchParams();
+
+  const error = searchParams.get("error");
 
   const handleLogin = async (formData: FormData) => {
     const email = formData.get("email");
@@ -31,10 +27,19 @@ export default function Login() {
       token: token,
     };
 
-    signIn("credentials", {
+    const result = await signIn("credentials", {
       ...data,
-      callbackUrl: "/minha-conta",
+      redirect: false,
     });
+
+    if (result?.error) {
+      toast.error("Erro ao tentar fazer o login");
+    } else {
+      toast.success("Login realizado com sucesso");
+      setTimeout(() => {
+        window.location.href = "/minha-conta";
+      }, 2000);
+    }
   };
 
   return (
@@ -140,8 +145,13 @@ export default function Login() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
               >
-                Entar
+                Entrar
               </button>
+              {error === "CredentialsSignin" && (
+                <span className="text-sm text-red-800">
+                  Erro ao tentar fazer o login;
+                </span>
+              )}
             </div>
           </form>
 
@@ -211,36 +221,3 @@ export default function Login() {
     </div>
   );
 }
-
-const customerLogin = async ({ email, password, token }: ICustomerlogin) => {
-  if (!token)
-    return {
-      success: "false",
-      error: "Enviar o token para a realizar a requisição",
-    };
-
-  try {
-    const response = await api.post(
-      "customer/login",
-      {
-        email,
-        password,
-      },
-      {
-        headers: {
-          authorization: token,
-        },
-      }
-    );
-
-    if (response.data.success == "false") return response.data;
-
-    return response.data.data;
-  } catch (error) {
-    console.error("Erro ao carregar categorias:", error);
-    return {
-      success: "false",
-      error: error,
-    };
-  }
-};

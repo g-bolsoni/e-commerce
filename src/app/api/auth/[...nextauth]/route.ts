@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 const handler = NextAuth({
   pages: {
     signIn: "/login",
+    error: "/login",
   },
 
   providers: [
@@ -47,19 +48,16 @@ const handler = NextAuth({
       },
     }),
   ],
+
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (user) {
+        return true;
+      } else {
+        return false; // Return false to indicate a failed sign-in attempt
+      }
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
-
-// const result = await customerLogin({ email, password, token });
-
-// if (result.success == "false") {
-//   console.error("Failed to load customer data");
-//   console.error(result.error);
-//   toast.error(result.error);
-//   return;
-// }
-
-// localStorage.setItem("customer_info", JSON.stringify(result));
-// toast.success("Login efeituado com sucesso!");
-// redirect("/minha-conta");

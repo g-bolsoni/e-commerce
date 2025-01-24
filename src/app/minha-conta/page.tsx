@@ -11,6 +11,7 @@ import {
   MdOutlineFavorite,
   MdOutlineAccountCircle,
 } from "react-icons/md";
+import ButtonLoggout from "./ButtonLoggout";
 export default async function Login() {
   const session = await getServerSession();
 
@@ -43,13 +44,16 @@ export default async function Login() {
             </span>
           </div>
         </div>
-        <button
-          type="button"
-          className="flex items-center justify-center py-2 px-3 max-h-7 md:max-h-10 h-full w-full bg-secondary-500 rounded-lg uppercase text-xs md:text-xs text-white font-semibold [&_svg]:mr-6 md:max-w-[180px]"
-        >
-          <MdEdit size={20} color="#fff" />
-          Editar dados
-        </button>
+        <div className="buttons flex flex-col gap-2">
+          <button
+            type="button"
+            className="flex items-center justify-center py-2 px-3 max-h-7 md:max-h-10 h-full w-full bg-secondary-600 rounded-lg uppercase text-xs md:text-xs text-white font-semibold [&_svg]:mr-6 md:max-w-[180px]"
+          >
+            <MdEdit size={20} color="#fff" />
+            Editar dados
+          </button>
+          <ButtonLoggout />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 rounded-md lg:grid-cols-3 lg:gap-8 mt-6 ">
