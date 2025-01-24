@@ -2,7 +2,7 @@
 
 import { useToken } from "@/hooks/TokenProvider";
 import { api } from "@/services/api";
-import { Erica_One } from "next/font/google";
+import { signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -25,18 +25,16 @@ export default function Login() {
       return;
     }
 
-    const result = await customerLogin({ email, password, token });
+    const data = {
+      email: email,
+      password: password,
+      token: token,
+    };
 
-    if (result.success == "false") {
-      console.error("Failed to load customer data");
-      console.error(result.error);
-      toast.error(result.error);
-      return;
-    }
-
-    localStorage.setItem("customer_info", JSON.stringify(result));
-    toast.success("Login efeituado com sucesso!");
-    redirect("/minha-conta");
+    signIn("credentials", {
+      ...data,
+      callbackUrl: "/minha-conta",
+    });
   };
 
   return (
