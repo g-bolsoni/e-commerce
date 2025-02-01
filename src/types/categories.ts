@@ -34,3 +34,12 @@ export interface CategoryDescription {
   meta_description: string;
   meta_keyword: string;
 }
+
+export interface ProcessedCategory {
+  category_id: number;
+  name: string;
+  meta_title: string;
+  meta_description: string;
+  meta_keyword: string;
+  children: ProcessedCategory[];
+}
