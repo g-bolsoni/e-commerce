@@ -1,13 +1,17 @@
-const { MongoClient } = require("mongodb");
+import mongoose from "mongoose";
 
-const uri =
-  "mongodb+srv://vane:Gbes0406@store.l0mhd.mongodb.net/?retryWrites=true&w=majority&appName=store";
+const connectDB = async () => {
+  if (mongoose.connections[0].readyState) return true;
 
-if (!uri) {
-  throw new Error("Por favor, defina a variável de ambiente MONGODB_URI");
-}
+  try {
+    await mongoose.connect(process.env.MONGODB_URI ?? "", {
+      dbName: "store",
+    });
 
-const client = new MongoClient(uri);
-const clientPromise = client.connect();
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-export default clientPromise;
+export default connectDB;
