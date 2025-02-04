@@ -1,16 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "flowbite-react";
 import Image from "next/image";
 import { MdClose, MdSearch } from "react-icons/md";
+import { searchProductsByName } from "@/database/search";
+
+interface IProductsSearch {
+  name: string;
+  price: string;
+  image: string;
+  product_id: number;
+}
 
 export const Search = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [results, setResults] = useState<IProductsSearch[]>([]);
+
+  useEffect(() => {
+    if (searchText.length > 1) {
+      const fetchResults = async () => {
+        const results = await searchProductsByName(searchText);
+        console.log("====================================");
+        console.log(results);
+        console.log("====================================");
+        setResults(results);
+      };
+
+      fetchResults();
+    } else {
+      setResults([]);
+    }
+  }, [searchText]);
 
   const handleClearSearch = () => {
     setSearchText("");
+    setResults([]);
   };
 
   return (
@@ -18,7 +44,7 @@ export const Search = () => {
       <button className="js-search_click" type="button" aria-label="Search" onClick={() => setOpenModal(true)}>
         <MdSearch size={24} color="#000" />
       </button>
-      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div>div]:!shadow-none">
+      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-9/12 [&>div>div]:!shadow-none">
         <div className="flex items-center w-full">
           <label htmlFor="search" className="sr-only">
             Pesquisar
