@@ -13,11 +13,24 @@ export async function searchProductsByName(searchTerm: string) {
       throw new Error("searchTerm inválido");
     }
 
-    const products = await Product.find({
-      "product_description.name": "Oculos",
-    })
-      .select("product_id image price product_description.name")
-      .limit(10);
+    // define pipeline
+    const agg = [
+      {
+        $search: {
+          index: "autocomplete_index",
+          autocomplete: {
+            query: searchTerm,
+            path: "product_description.name",
+          },
+        },
+      },
+      {
+        $limit: 10,
+      },
+    ];
+
+    // run pipeline
+    const products = await Product.aggregate(agg);
 
     return products;
   } catch (error) {
