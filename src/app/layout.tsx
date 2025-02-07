@@ -22,10 +22,12 @@ export default function RootLayout({ children }: IChildren) {
         <QueryClientProvider client={queryClient}>
           <TokenProvider>
             <Header />
-            <div className="mx-3 md:container md:mx-auto overflow-x-hidden">
+            <main className="overflow-x-hidden">
               {children}
-              <Newsletter />
-            </div>
+              <div className="newsletter mx-3 md:container md:mx-auto">
+                <Newsletter />
+              </div>
+            </main>
             <Footer />
           </TokenProvider>
         </QueryClientProvider>
