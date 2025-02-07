@@ -75,26 +75,28 @@ export const Search = () => {
           </div>
         </div>
         <div className="results">
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-white p-8 rounded-xl mt-2.5 overflow-y-auto max-h-calc">
-            {results.map((product) => {
-              const imageUrl = product.image ? product.image : "/images/no_image";
-              return (
-                <li key={product.product_id} className="block my-2">
-                  <Link href={`product/${product.product_description[0].name}`} className="flex flex-col items-center justify-start gap-2 ">
-                    <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">
-                      <Image src={imageUrl} alt={product.product_description[0].name} className="w-full h-full max-w-80 max-h-80 object-contain rounded-lg" width={320} height={320} />
-                    </div>
-                    <div className="flex flex-col gap-2 w-full h-20">
-                      <span className="line-clamp-1 text-md lg:text-md font-semibold">{product.product_description[0].name}</span>
-                      <div className="flex gap-2.5 items-center">
-                        <span className="text-md text-fontSecundary-800 font-medium">R$ {product.price}</span>
+          {results.length > 0 && (
+            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-white p-8 rounded-xl mt-2.5 overflow-y-auto max-h-calc">
+              {results.map((product) => {
+                const imageUrl = product.image ? product.image : "/images/no_image";
+                return (
+                  <li key={product.product_id} className="block my-2">
+                    <Link href={`product/${product.product_description[0].name}`} className="flex flex-col items-center justify-start gap-2 ">
+                      <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">
+                        <Image src={imageUrl} alt={product.product_description[0].name} className="w-full h-full max-w-80 max-h-80 object-contain rounded-lg" width={320} height={320} />
                       </div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                      <div className="flex flex-col gap-2 w-full h-20">
+                        <span className="line-clamp-1 text-md lg:text-md font-semibold">{product.product_description[0].name}</span>
+                        <div className="flex gap-2.5 items-center">
+                          <span className="text-md text-fontSecundary-800 font-medium">R$ {product.price}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </Modal>
     </li>

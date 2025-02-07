@@ -25,6 +25,13 @@ export async function searchProductsByName(searchTerm: string) {
         },
       },
       {
+        $project: {
+          "product_description.name": 1,
+          image: 1,
+          price: 1,
+        },
+      },
+      {
         $limit: 10,
       },
     ];
@@ -32,7 +39,7 @@ export async function searchProductsByName(searchTerm: string) {
     // run pipeline
     const products = await Product.aggregate(agg);
 
-    return products;
+    return JSON.parse(JSON.stringify(products));
   } catch (error) {
     console.error("Erro ao buscar produtos pelo nome:", error);
     return [];
