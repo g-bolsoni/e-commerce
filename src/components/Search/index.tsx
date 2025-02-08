@@ -1,70 +1,102 @@
-"use client";
-
-import { useState } from "react";
-import { Modal } from "flowbite-react";
+import { useState, useEffect, useRef } from "react";
+import debounce from "lodash.debounce";
+import { searchProductsByName } from "@/database/search";
 import Image from "next/image";
 import { MdClose, MdSearch } from "react-icons/md";
+import { Modal } from "flowbite-react";
+import Link from "next/link";
+import { ProductDescription } from "@/types/product";
+
+interface IProductsSearch {
+  product_description: ProductDescription[];
+  price: string;
+  image: string;
+  product_id: number;
+}
 
 export const Search = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [results, setResults] = useState<IProductsSearch[]>([]);
+
+  // Cria a função debounced apenas uma vez
+  const debouncedSearch = useRef(
+    debounce(async (query: string) => {
+      if (query.length > 1) {
+        const results = await searchProductsByName(query);
+        setResults(results);
+      } else {
+        setResults([]);
+      }
+    }, 500)
+  );
+
+  // Chama a função debounced sempre que searchText mudar
+  useEffect(() => {
+    debouncedSearch.current(searchText);
+  }, [searchText]);
+
+  // Cancela o debounce ao desmontar o componente
+  useEffect(() => {
+    return () => {
+      debouncedSearch.current.cancel();
+    };
+  }, []);
 
   const handleClearSearch = () => {
     setSearchText("");
+    setResults([]);
   };
 
   return (
     <li className="search w-6 h-6 justify-start items-start flex relative fill-white md:fill-black lg:ml-6">
-      <button className="js-search_click" type="button" aria-label="Search" onClick={() => setOpenModal(true)}>
+      <button type="button" aria-label="Search" onClick={() => setOpenModal(true)}>
         <MdSearch size={24} color="#000" />
       </button>
-      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div>div]:!shadow-none">
+      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-9/12 [&>div>div]:!shadow-none">
         <div className="flex items-center w-full">
           <label htmlFor="search" className="sr-only">
             Pesquisar
           </label>
           <div className="relative w-full flex">
-            <input type="text" id="search" className="js-search bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg outline-none focus:border-secondary-900 block w-full pl-10 p-2.5" placeholder="Pesquisar ..." required autoFocus autoComplete="off" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-            <div className="js-containerIcons absolute right-2.5 h-full">
-              <button type="submit" className={`js-iconSearch p-2.5 ml-2 text-md font-medium text-black bg-transparent h-full ${searchText.length > 0 ? "hidden" : "block"}`}>
-                <MdSearch size={18} color="#000" />
-                <span className="sr-only">Search</span>
-              </button>
-              <button type="button" className={`js-clearSearch p-2.5 ml-2 text-md font-medium text-black fill-black h-full ${searchText.length > 0 ? "block" : "hidden"}`} onClick={handleClearSearch}>
-                <MdClose size={18} color="#000" />
-              </button>
+            <input type="text" id="search" className="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg outline-none focus:border-secondary-900 block w-full pl-10 p-2.5" placeholder="Pesquisar ..." required autoFocus autoComplete="off" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+            <div className="absolute right-2.5 h-full">
+              {searchText.length > 0 ? (
+                <button type="button" className="p-2.5 ml-2 text-md font-medium text-black" onClick={handleClearSearch}>
+                  <MdClose size={18} color="#000" />
+                </button>
+              ) : (
+                <button type="submit" className="p-2.5 ml-2 text-md font-medium text-black">
+                  <MdSearch size={18} color="#000" />
+                  <span className="sr-only">Search</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
         <div className="results">
-          <ul className="flex flex-col bg-white p-8 rounded-xl mt-2.5 overflow-y-auto max-h-calc">
-            <li className="h-20 my-2 block">
-              <a href="https://www.sapatoretro.com.br/p-sapato-boneca-preto-milao-400-03-preto" className="flex items-center justify-start gap-2 h-20">
-                <div className="h-20 w-20">
-                  <Image src="https://img.irroba.com.br/fit-in/80x80/filters:fill(fff):quality(80)/sapatore/catalog/lancamentos-2024/sapato-boneca-milao-preto-40003.jpg " alt="Sapato Boneca - MILÃO - Preto - 400.03" className="h-full" width={80} height={80} />
-                </div>
-                <div className="flex flex-col gap-2 w-full h-20">
-                  <span className="line-clamp-1 text-md lg:text-md">Sapato Boneca - MILÃO - Preto - 400.03</span>
-                  <div className="flex gap-2.5 items-center">
-                    <span className="text-md text-fontSecundary-800 font-medium">R$ 279,90</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li className="h-20 my-2 block">
-              <a href="https://www.sapatoretro.com.br/p-lixeira-de-carro-de-couro-legitimo-preta" className="flex items-center justify-start gap-2 h-20">
-                <div className="h-20 w-20">
-                  <Image src="https://img.irroba.com.br/fit-in/80x80/filters:fill(fff):quality(80)/sapatore/catalog/lixeira-sr.jpg " alt="Lixeira de Carro de Couro Legítimo - Preta" width={80} height={80} className="h-full" />
-                </div>
-                <div className="flex flex-col gap-2 w-full h-20">
-                  <span className="line-clamp-1 text-md lg:text-md">Lixeira de Carro de Couro Legítimo - Preta</span>
-                  <div className="flex gap-2.5 items-center">
-                    <span className="text-md text-fontSecundary-800 font-medium">R$ 89,90</span>
-                  </div>
-                </div>
-              </a>
-            </li>
-          </ul>
+          {results.length > 0 && (
+            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-white p-8 rounded-xl mt-2.5 overflow-y-auto max-h-calc">
+              {results.map((product) => {
+                const imageUrl = product.image ? product.image : "/images/no_image";
+                return (
+                  <li key={product.product_id} className="block my-2">
+                    <Link href={`product/${product.product_description[0].name}`} className="flex flex-col items-center justify-start gap-2 ">
+                      <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">
+                        <Image src={imageUrl} alt={product.product_description[0].name} className="w-full h-full max-w-80 max-h-80 object-contain rounded-lg" width={320} height={320} />
+                      </div>
+                      <div className="flex flex-col gap-2 w-full h-20">
+                        <span className="line-clamp-1 text-md lg:text-md font-semibold">{product.product_description[0].name}</span>
+                        <div className="flex gap-2.5 items-center">
+                          <span className="text-md text-fontSecundary-800 font-medium">R$ {product.price}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </Modal>
     </li>
