@@ -29,6 +29,7 @@ export async function searchProductsByName(searchTerm: string) {
           "product_description.name": 1,
           image: 1,
           price: 1,
+          product_special: 1,
         },
       },
       {

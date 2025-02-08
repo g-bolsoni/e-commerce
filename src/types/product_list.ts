@@ -37,7 +37,7 @@ export interface Product {
   approval_certificate: any;
   product_description: ProductDescription[];
   product_image: any[];
-  product_special: ProductSpecial[];
+  product_special?: ProductSpecial[];
   product_discount: any[];
   product_option: ProductOption;
 }
@@ -56,9 +56,13 @@ export interface ProductDescription {
 export interface ProductSpecial {
   customer_group_id: number;
   priority: number;
+  payment_select: string;
   price: string;
   date_start: string;
   date_end: string;
+  price_discount: any;
+  quantity: number;
+  price_type: number;
 }
 
 export interface ProductOption {

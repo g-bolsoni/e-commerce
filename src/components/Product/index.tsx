@@ -1,7 +1,7 @@
-import { formatPrice } from "@/util/format";
 import Image from "next/image";
 import { Product } from "@/types/product_list";
 import Link from "next/link";
+import Prices from "../Prices/page";
 
 export const Products = ({ products }: { products: Product[] }) => {
   return (
@@ -23,20 +23,10 @@ export const Products = ({ products }: { products: Product[] }) => {
                 <span className="text-sm font-normal md:text-base text-fontSecondary-900 line-clamp-2">{product.product_description[0].name}</span>
               </div>
 
-              <div className="prices flex flex-col gap-1">
-                <span className="font-bold text-md md:text-lg text-fontSecondary-900">{formatPrice(parseFloat(product.price))}</span>
-                <div className="installments text-sm text-fontSecondary-900">
-                  <span className="quantity_installments font-bold"> 6x </span> de
-                  <span className="amount_installments font-bold">R$ 41,65</span>
-                  sem juros
-                </div>
-                <div className="product-price-discount text-sm text-fontSecondary-900">
-                  <b>R$ 242,40</b> no Pix
-                </div>
-              </div>
+              <Prices product={product} />
               <div className="product-list-btn flex items-center gap-2 flex-wrap justify-center">
                 <a href={`product/${product.url}`} className="w-full text-center bg-primary-500 text-fontPrimary-50 rounded-full px-6 py-2">
-                  Comprar
+                  Compra
                 </a>
               </div>
             </div>
