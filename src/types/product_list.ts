@@ -33,6 +33,7 @@ export interface Product {
   date_added: string;
   date_modified: string;
   user_log: string;
+  url: string;
   approval_certificate: any;
   product_description: ProductDescription[];
   product_image: any[];
