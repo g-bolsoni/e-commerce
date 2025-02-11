@@ -38,14 +38,14 @@ const DesktopCategories = ({ categories }: DesktopCategoriesProps) => {
                         <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
                           {category.children.map((section) => (
                             <div key={section.name}>
-                              <Link href={`/category/${section.name.toLowerCase()}`} id={`${section.name}-heading`} className="font-medium text-gray-900 cursor-pointer">
+                              <Link href={`/${section.name.toLowerCase()}`} id={`${section.name}-heading`} className="font-medium text-gray-900 cursor-pointer">
                                 {section.name}
                               </Link>
                               {section.children.length > 0 && (
                                 <ul role="list" aria-labelledby={`${section.name}-heading`} className="mt-6 space-y-6 sm:mt-4 sm:space-y-4">
                                   {section.children.map((item) => (
                                     <li key={item.category_id} className="flex">
-                                      <Link href={`/category/${item.name.toLowerCase()}`} className="hover:text-gray-800 cursor-pointer">
+                                      <Link href={`/${item.name.toLowerCase()}`} className="hover:text-gray-800 cursor-pointer">
                                         {item.name}
                                       </Link>
                                     </li>
@@ -61,7 +61,7 @@ const DesktopCategories = ({ categories }: DesktopCategoriesProps) => {
                 </PopoverPanel>
               </Popover>
             ) : (
-              <Link href={`/category/${category.name.toLowerCase()}`} key={category.category_id} className="text-sm md:text-md md:font-semibold font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
+              <Link href={`/${category.name.toLowerCase()}`} key={category.category_id} className="text-sm md:text-md md:font-semibold font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
                 {category.name}
               </Link>
             )

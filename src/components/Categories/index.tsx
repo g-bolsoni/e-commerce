@@ -57,7 +57,7 @@ export const Categories = () => {
 
 const CategoryItem = ({ category }: { category: ProcessedCategory }) => (
   <div className="category-item relative">
-    <Link href={`/category/${category.name.toLowerCase()}`} className="w-max capitalize transition-all duration-200 border-primary-500 hover:border-b text-[#212121] text-base p-1">
+    <Link href={`/${category.name.toLowerCase()}`} className="w-max capitalize transition-all duration-200 border-primary-500 hover:border-b text-[#212121] text-base p-1">
       {category.name}
     </Link>
 

@@ -82,7 +82,7 @@ const FooterCategories = () => {
     <ul className="flex flex-col gap-2 items-center md:items-start">
       {categories.map((category) => (
         <li key={category.category_id}>
-          <Link href={`/category/${category.name.toLowerCase()}`}> {category.name}</Link>
+          <Link href={`/${category.name.toLowerCase()}`}> {category.name}</Link>
         </li>
       ))}
     </ul>

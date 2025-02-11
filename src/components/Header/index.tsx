@@ -156,8 +156,8 @@ export default function Header() {
         </div>
       </Dialog>
 
-      <header className="relative bg-white">
-        <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <header className="relative mx-auto container bg-white">
+        <nav aria-label="Top" className="px-4 sm:px-0">
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               <button type="button" onClick={() => setOpen(true)} className="relative rounded-md overflow-y-hidden bg-white p-2 text-gray-400 lg:hidden">

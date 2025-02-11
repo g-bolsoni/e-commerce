@@ -7,11 +7,11 @@ export const Products = ({ products }: { products: Product[] }) => {
   return (
     <>
       {products.map((product) => {
-        const imageUrl = product.image ? product.image : "/images/no_image";
+        const imageUrl = product.image ? product.image : "/images/no_image.jpg";
         return (
           <div key={product.product_id} className="product flex flex-col gap-4 relative group/product">
             <div className="rounded-3xl w-full bg-white relative">
-              <Link href={`product/${product.product_description[0].name}`}>
+              <Link href={`/product/${product.url}`}>
                 <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">
                   <Image src={imageUrl} className="w-full h-full max-w-80 max-h-80 object-contain rounded-lg" alt={product.product_description[0].name} width={320} height={320} />
                 </div>
@@ -25,7 +25,7 @@ export const Products = ({ products }: { products: Product[] }) => {
 
               <Prices product={product} />
               <div className="product-list-btn flex items-center gap-2 flex-wrap justify-center">
-                <a href={`product/${product.url}`} className="w-full text-center bg-primary-500 text-fontPrimary-50 rounded-full px-6 py-2">
+                <a href={`/product/${product.url}`} className="w-full text-center bg-primary-500 text-fontPrimary-50 rounded-full px-6 py-2">
                   Compra
                 </a>
               </div>
