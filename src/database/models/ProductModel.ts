@@ -1,91 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-interface IProductDescription {
-  language_id: number;
-  name: string;
-  description: string;
-  description_resume: string;
-  tag: string;
-  meta_title: string;
-  meta_description: string;
-  meta_keyword: string;
-}
-
-interface IProductOptionValue {
-  product_option_value_id: number;
-  product_id: number;
-  option_value_id: number;
-  quantity: number;
-  subtract: number;
-  price: string;
-  price_prefix: string;
-  weight: string;
-  weight_prefix: string;
-  stock_type: string;
-  reference: string;
-  external_reference: string;
-  name: string;
-}
-
-interface IProductOption {
-  product_option_id: number;
-  option_id: number;
-  required: number;
-  principal: number;
-  grid_stock: number;
-  calculation_simulator: number;
-  package_name: string;
-  name: string;
-  product_option_value: IProductOptionValue[];
-}
-
-export interface ProductSpecial {
-  customer_group_id: number;
-  priority: number;
-  payment_select: string;
-  price: string;
-  date_start: string;
-  date_end: string;
-  price_discount: any;
-  quantity: number;
-  price_type: number;
-}
-
-export interface IProduct extends Document {
-  product_id: number;
-  product_model: string;
-  external_reference: string;
-  stock_status_id: number;
-  image: string;
-  manufacturer_id: number;
-  price: string;
-  cost_price: string;
-  price_sale: string;
-  price_pos: string;
-  weight: string;
-  weight_class_id: number;
-  length: string;
-  width: string;
-  height: string;
-  sku: string;
-  send_to_pos: number;
-  status: number;
-  date_added: Date;
-  date_modified: Date;
-  user_log: string;
-  product_description: IProductDescription[];
-  product_to_category: any[];
-  product_special: ProductSpecial[];
-  product_discount: any[];
-  product_option: IProductOption[];
-  product_image: any[];
-  ncm: string | null;
-  seller: string | null;
-  url: string;
-  minimum: number;
-  multiple_sales_quantity: number;
-  approval_certificate: string;
-}
+import { ProductInfo } from "@/types/product";
+import mongoose, { Schema } from "mongoose";
 
 const ProductDescriptionSchema: Schema = new Schema({
   language_id: { type: Number, required: true },
@@ -126,7 +40,7 @@ const ProductOptionSchema: Schema = new Schema({
   product_option_value: { type: [ProductOptionValueSchema], required: true },
 });
 
-export const ProductSchema: Schema = new Schema(
+const ProductSchema: Schema = new Schema(
   {
     product_id: { type: Number, required: true },
     model: { type: String, required: true },
@@ -165,4 +79,4 @@ export const ProductSchema: Schema = new Schema(
   { collection: "products" }
 );
 
-export default mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
+export default mongoose.models.Product || mongoose.model<ProductInfo>("Product", ProductSchema);

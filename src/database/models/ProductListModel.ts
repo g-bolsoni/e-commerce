@@ -1,16 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-// Interface para ProductDescription
-interface IProductDescription {
-  language_id: number;
-  name: string;
-  description: string;
-  tag: string;
-  meta_title: string;
-  meta_description: string;
-  meta_keyword: string;
-  description_resume: string;
-}
+import { IProductList } from "@/types/product_list";
+import mongoose, { Schema } from "mongoose";
 
 // Schema para ProductDescription
 const ProductDescriptionSchema: Schema = new Schema({
@@ -23,21 +12,6 @@ const ProductDescriptionSchema: Schema = new Schema({
   meta_keyword: { type: String, required: true },
   description_resume: { type: String, required: true },
 });
-
-// Interface para ProductOptionValue
-interface IProductOptionValue {
-  option_value_id: number;
-  product_option_value_id: number;
-  quantity: number;
-  subtract: number;
-  price: string;
-  price_prefix: string;
-  weight: string;
-  weight_prefix: string;
-  reference: string;
-  external_reference: string;
-  name: string;
-}
 
 // Schema para ProductOptionValue
 const ProductOptionValueSchema: Schema = new Schema({
@@ -54,17 +28,6 @@ const ProductOptionValueSchema: Schema = new Schema({
   name: { type: String, required: true },
 });
 
-// Interface para ProductOption
-interface IProductOption {
-  product_option_id: number;
-  option_id: number;
-  principal: number;
-  type: string;
-  required: number;
-  name: string;
-  product_option_value: IProductOptionValue[];
-}
-
 // Schema para ProductOption
 const ProductOptionSchema: Schema = new Schema({
   product_option_id: { type: Number, required: true },
@@ -75,43 +38,6 @@ const ProductOptionSchema: Schema = new Schema({
   name: { type: String, required: true },
   product_option_value: { type: [ProductOptionValueSchema], required: true },
 });
-
-// Interface para Product
-interface IProduct extends Document {
-  product_id: number;
-  product_model: string;
-  external_reference: string;
-  stock_status_id: number;
-  image: string;
-  manufacturer_id: number;
-  price: string;
-  cost_price: string;
-  price_sale: string;
-  price_pos: string; // Alterado de price_pdv para price_pos conforme seu exemplo
-  weight: string;
-  weight_class_id: number;
-  length: string;
-  width: string;
-  height: string;
-  sku: string;
-  send_to_pos: number;
-  status: number;
-  date_added: Date;
-  date_modified: Date;
-  user_log: string;
-  product_description: IProductDescription[];
-  product_to_category: any[]; // Pode ser tipado mais especificamente se desejar
-  product_special: any[];
-  product_discount: any[];
-  product_option: IProductOption[];
-  product_image: any[]; // Pode ser tipado como { image: string }[]
-  ncm: string | null;
-  seller: string | null;
-  url: string;
-  minimum: number;
-  multiple_sales_quantity: number;
-  approval_certificate: string;
-}
 
 // Schema para Product
 const ProductSchema: Schema = new Schema(
@@ -153,14 +79,6 @@ const ProductSchema: Schema = new Schema(
   { collection: "productList" }
 );
 
-// Interface para ProductList
-export interface IProductList extends Document {
-  name: string;
-  status: string;
-  products: IProduct[];
-}
-
-// Schema para ProductList
 const ProductListSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
