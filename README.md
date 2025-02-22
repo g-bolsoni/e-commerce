@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ecommerce Project
 
-## Getting Started
+Este é um projeto de ecommerce desenvolvido com Next.js, TypeScript, MongoDB e NextAuth para autenticação. O projeto inclui funcionalidades como login, pesquisa de produtos e exibição de detalhes do produto.
 
-First, run the development server:
+## Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [NextAuth](https://next-auth.js.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Flowbite](https://flowbite.com/)
+
+## Estrutura do Projeto
+
+A estrutura do projeto é organizada da seguinte forma:
+
+```
+/home/vane/Documents/Ecommerces/ecommerce
+├── src
+│   ├── app
+│   │   ├── api
+│   │   │   └── auth
+│   │   │       └── [...nextauth]
+│   │   │           └── route.ts
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   ├── produto
+│   │   │   └── [slug]
+│   │   │       └── page.tsx
+│   ├── components
+│   │   └── Search
+│   │       └── index.tsx
+│   ├── database
+│   │   ├── models
+│   │   │   └── ProductModel.ts
+│   │   └── search
+│   │       └── index.ts
+│   ├── hooks
+│   │   └── TokenProvider.ts
+│   ├── services
+│   │   └── api.ts
+│   ├── types
+│   │   ├── product.ts
+│   │   └── user.ts
+├── .env
+├── .gitignore
+├── next.config.js
+├── package.json
+└── README.md
+```
+
+## Configuração do Ambiente
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/ecommerce.git
+cd ecommerce
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente no arquivo `.env`:
+
+```properties
+NEXTAUTH_URL=http://localhost:3000/login
+NEXTAUTH_SECRET=sua_chave_secreta
+MONGODB_URI=sua_uri_mongodb
+```
+
+4. Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Funcionalidades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Login
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+A página de login permite que os usuários façam login usando suas credenciais. Se o login for bem-sucedido, o usuário será redirecionado para a página "minha-conta". Se o usuário já estiver logado, ele será redirecionado automaticamente para a página "minha-conta".
 
-## Learn More
+### Pesquisa de Produtos
 
-To learn more about Next.js, take a look at the following resources:
+O componente de pesquisa permite que os usuários pesquisem produtos pelo nome. Os resultados da pesquisa são buscados no MongoDB e exibidos em tempo real conforme o usuário digita.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Detalhes do Produto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+A página de detalhes do produto exibe informações detalhadas sobre um produto específico, incluindo imagens, preço, avaliações e descrição.
 
-## Deploy on Vercel
+## Contribuição
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Se você quiser contribuir para este projeto, siga estas etapas:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Fork o repositório.
+2. Crie uma nova branch (`git checkout -b feature/nova-funcionalidade`).
+3. Faça suas alterações e commit (`git commit -m 'Adiciona nova funcionalidade'`).
+4. Envie para a branch (`git push origin feature/nova-funcionalidade`).
+5. Abra um Pull Request.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
