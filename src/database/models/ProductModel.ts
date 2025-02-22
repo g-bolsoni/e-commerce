@@ -41,7 +41,7 @@ interface IProductOption {
 
 interface IProduct extends Document {
   product_id: number;
-  model: string;
+  product_model: string;
   external_reference: string;
   stock_status_id: number;
   image: string;
@@ -114,40 +114,43 @@ const ProductOptionSchema: Schema = new Schema({
   product_option_value: { type: [ProductOptionValueSchema], required: true },
 });
 
-const ProductSchema: Schema = new Schema({
-  product_id: { type: Number, required: true },
-  model: { type: String, required: true },
-  external_reference: { type: String, required: true },
-  stock_status_id: { type: Number, required: true },
-  image: { type: String, required: true },
-  manufacturer_id: { type: Number, required: true },
-  price: { type: String, required: true },
-  cost_price: { type: String, required: true },
-  price_sale: { type: String, required: true },
-  price_pos: { type: String, required: true },
-  weight: { type: String, required: true },
-  weight_class_id: { type: Number, required: true },
-  length: { type: String, required: true },
-  width: { type: String, required: true },
-  height: { type: String, required: true },
-  sku: { type: String, required: true },
-  send_to_pos: { type: Number, required: true },
-  status: { type: Number, required: true },
-  date_added: { type: Date, required: true },
-  date_modified: { type: Date, required: true },
-  user_log: { type: String, required: true },
-  product_description: { type: [ProductDescriptionSchema], required: true },
-  product_to_category: { type: Array, required: true },
-  product_special: { type: Array, required: true },
-  product_discount: { type: Array, required: true },
-  product_option: { type: [ProductOptionSchema], required: true },
-  product_image: { type: Array, required: true },
-  ncm: { type: String, default: null },
-  seller: { type: String, default: null },
-  url: { type: String, required: true },
-  minimum: { type: Number, required: true },
-  multiple_sales_quantity: { type: Number, required: true },
-  approval_certificate: { type: String, required: true },
-});
+const ProductSchema: Schema = new Schema(
+  {
+    product_id: { type: Number, required: true },
+    model: { type: String, required: true },
+    external_reference: { type: String, required: true },
+    stock_status_id: { type: Number, required: true },
+    image: { type: String, required: true },
+    manufacturer_id: { type: Number, required: true },
+    price: { type: String, required: true },
+    cost_price: { type: String, required: true },
+    price_sale: { type: String, required: true },
+    price_pos: { type: String, required: true },
+    weight: { type: String, required: true },
+    weight_class_id: { type: Number, required: true },
+    length: { type: String, required: true },
+    width: { type: String, required: true },
+    height: { type: String, required: true },
+    sku: { type: String, required: true },
+    send_to_pos: { type: Number, required: true },
+    status: { type: Number, required: true },
+    date_added: { type: Date, required: true },
+    date_modified: { type: Date, required: true },
+    user_log: { type: String, required: true },
+    product_description: { type: [ProductDescriptionSchema], required: true },
+    product_to_category: { type: Array, required: true },
+    product_special: { type: Array, required: true },
+    product_discount: { type: Array, required: true },
+    product_option: { type: [ProductOptionSchema], required: true },
+    product_image: { type: Array, required: true },
+    ncm: { type: String, default: null },
+    seller: { type: String, default: null },
+    url: { type: String, required: true },
+    minimum: { type: Number, required: true },
+    multiple_sales_quantity: { type: Number, required: true },
+    approval_certificate: { type: String, required: true },
+  },
+  { collection: "products" }
+);
 
 export default mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);

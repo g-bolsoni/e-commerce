@@ -72,11 +72,17 @@ export interface ProductOption {
 }
 
 export interface ProductOptionValue {
+  product_option_value_id: number;
+  product_id: number;
   option_value_id: number;
   quantity: number;
+  subtract: number;
   price: string;
   price_prefix: string;
   weight: string;
   weight_prefix: string;
-  name: string;
+  stock_type: string;
+  reference?: string;
+  external_reference: string;
+  name?: string;
 }

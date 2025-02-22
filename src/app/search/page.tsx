@@ -1,15 +1,6 @@
 import { Products } from "@/components/Product";
 import { searchProductsByName } from "@/database/search";
-import Image from "next/image";
 
-interface Product {
-  product_id: string;
-  product_description: {
-    name: string;
-  };
-  image: string;
-  price: number;
-}
 // Esta função é executada no servidor (server component)
 export default async function SearchPage({ searchParams }: { searchParams: { text?: string } }) {
   // Obtém o termo de busca da query string
