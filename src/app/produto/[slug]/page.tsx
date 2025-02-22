@@ -16,8 +16,14 @@ export default async function Produto({ params }: { params: { slug?: string } })
 
   if (!product) redirect("/");
 
-  const product_image = product.image ? product.image : "/images/no_image.jpg";
   const decodedHTML = he.decode(product.product_description[0].description);
+  const image_products = [{ image: product.image, main_image: true }];
+
+  if (product.product_image.length) {
+    product.product_image.map((imageLink: any) => {
+      image_products.push({ image: imageLink.image, main_image: false });
+    });
+  }
 
   const product2 = {
     rating: 3.9,
@@ -67,7 +73,9 @@ export default async function Produto({ params }: { params: { slug?: string } })
         <div className="product_image mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
           <h2 className="sr-only">Images</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8 auto-rows-min">
-            <Image src={product_image} width={600} height={600} alt="Product" className="lg:col-span-2 lg:row-span-2" />
+            {image_products.map((image, index) => {
+              return <img key={index} src={image.image} alt="Product" className={`${image.main_image ? "lg:col-span-2 lg:row-span-2" : ""} w-full h-full`} />;
+            })}
           </div>
         </div>
         <div className="mt-6 lg:mt-0 product_info lg:col-span-5 lg:col-start-8">
