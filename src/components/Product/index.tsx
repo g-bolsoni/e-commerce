@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { Product } from "@/types/product_list";
+
 import Link from "next/link";
 import Prices from "../Prices/page";
+import { IProduct } from "@/database/models/ProductModel";
 
-export const Products = ({ products }: { products: Product[] }) => {
+export const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <>
       {products.map((product) => {

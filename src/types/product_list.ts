@@ -20,26 +20,38 @@ export interface ProductListInfo {
 
 export interface Product {
   product_id: number;
-  model: string;
+  product_model: string;
+  external_reference: string;
+  stock_status_id: number;
   image: string;
   manufacturer_id: number;
   price: string;
   cost_price: string;
+  price_sale: string;
+  price_pos: string; // Alterado de price_pdv para price_pos conforme seu exemplo
   weight: string;
+  weight_class_id: number;
   length: string;
   width: string;
   height: string;
+  sku: string;
+  send_to_pos: number;
   status: number;
-  date_added: string;
-  date_modified: string;
+  date_added: Date;
+  date_modified: Date;
   user_log: string;
-  url: string;
-  approval_certificate: any;
   product_description: ProductDescription[];
-  product_image: any[];
-  product_special?: ProductSpecial[];
+  product_to_category: any[]; // Pode ser tipado mais especificamente se desejar
+  product_special: any[];
   product_discount: any[];
-  product_option: ProductOption;
+  product_option: ProductOption[];
+  product_image: any[]; // Pode ser tipado como { image: string }[]
+  ncm: string | null;
+  seller: string | null;
+  url: string;
+  minimum: number;
+  multiple_sales_quantity: number;
+  approval_certificate: string;
 }
 
 export interface ProductDescription {

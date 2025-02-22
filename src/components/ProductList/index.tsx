@@ -1,51 +1,16 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
-
-import { api } from "@/services/api";
-import { ProductListInfo, IProductList } from "@/types/product_list";
-import { useToken } from "@/hooks/TokenProvider";
+import { getProductList } from "@/database/prodcutList";
 import { Products } from "../Product";
 
-const loadProducts = async (token: string | null) => {
-  if (!token) return [];
+export async function ProductList() {
+  const product_list = await getProductList();
 
-  try {
-    const response = await api.get<IProductList>("/product/lists", {
-      headers: {
-        authorization: token,
-      },
-    });
-
-    if (response.status !== 200) return [];
-
-    return response.data.data;
-  } catch (error) {
-    console.error("Erro ao carregar categorias:", error);
-    return [];
-  }
-};
-
-export function ProductList() {
-  const { token } = useToken();
-  const { data, isLoading } = useQuery<ProductListInfo[]>({
-    queryKey: ["products"],
-    queryFn: () => loadProducts(token),
-    enabled: !!token, // Só busca se o token estiver disponível
-    staleTime: 1000 * 60 * 60, // 1 hora
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
-  });
-
-  if (isLoading) return <div>Carregando...</div>;
-
-  if (!data || data.length === 0) return <div>Sem produtos para mostrar.</div>;
+  if (product_list.length === 0) return;
 
   return (
     <>
-      {data.map((list, index) => {
+      {product_list.map((list, index) => {
         if (list.products.length <= 0) return;
+        console.log(list.products);
         return (
           <div className="list-products" key={index}>
             <span className="list_title flex w-full flex-col items-center my-4 font-bold text-lg lg:text-xl">{list.name}</span>

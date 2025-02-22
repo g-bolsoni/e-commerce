@@ -39,7 +39,19 @@ interface IProductOption {
   product_option_value: IProductOptionValue[];
 }
 
-interface IProduct extends Document {
+export interface ProductSpecial {
+  customer_group_id: number;
+  priority: number;
+  payment_select: string;
+  price: string;
+  date_start: string;
+  date_end: string;
+  price_discount: any;
+  quantity: number;
+  price_type: number;
+}
+
+export interface IProduct extends Document {
   product_id: number;
   product_model: string;
   external_reference: string;
@@ -63,7 +75,7 @@ interface IProduct extends Document {
   user_log: string;
   product_description: IProductDescription[];
   product_to_category: any[];
-  product_special: any[];
+  product_special: ProductSpecial[];
   product_discount: any[];
   product_option: IProductOption[];
   product_image: any[];
@@ -114,7 +126,7 @@ const ProductOptionSchema: Schema = new Schema({
   product_option_value: { type: [ProductOptionValueSchema], required: true },
 });
 
-const ProductSchema: Schema = new Schema(
+export const ProductSchema: Schema = new Schema(
   {
     product_id: { type: Number, required: true },
     model: { type: String, required: true },

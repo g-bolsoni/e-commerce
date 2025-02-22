@@ -1,8 +1,8 @@
-import { Product, ProductSpecial } from "@/types/product_list";
 import { formatPrice } from "@/util/format";
 import React from "react";
+import { IProduct, ProductSpecial } from "@/database/models/ProductModel";
 
-const Prices = ({ product }: { product: Product }) => {
+const Prices = ({ product }: { product: IProduct }) => {
   const customerGroupId = 8;
   const originalPrice = parseFloat(product.price);
 
