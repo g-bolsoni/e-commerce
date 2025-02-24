@@ -1,7 +1,8 @@
 "use server";
 
 import { error } from "console";
-import ProductListModel, { IProductList } from "../models/ProductListModel";
+import ProductListModel from "../models/ProductListModel";
+import { IProductList } from "@/types/product_list";
 
 export async function getProductList(): Promise<IProductList[]> {
   try {

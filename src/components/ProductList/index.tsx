@@ -10,7 +10,6 @@ export async function ProductList() {
     <>
       {product_list.map((list, index) => {
         if (list.products.length <= 0) return;
-        console.log(list.products);
         return (
           <div className="list-products" key={index}>
             <span className="list_title flex w-full flex-col items-center my-4 font-bold text-lg lg:text-xl">{list.name}</span>

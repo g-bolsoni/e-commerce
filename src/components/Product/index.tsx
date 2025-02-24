@@ -2,9 +2,9 @@ import Image from "next/image";
 
 import Link from "next/link";
 import Prices from "../Prices/page";
-import { IProduct } from "@/database/models/ProductModel";
+import { ProductInfo } from "@/types/product";
 
-export const Products = ({ products }: { products: IProduct[] }) => {
+export const Products = ({ products }: { products: ProductInfo[] }) => {
   return (
     <>
       {products.map((product) => {
@@ -27,7 +27,7 @@ export const Products = ({ products }: { products: IProduct[] }) => {
               <Prices product={product} />
               <div className="product-list-btn flex items-center gap-2 flex-wrap justify-center">
                 <a href={`/produto/${product.url}`} className="w-full text-center bg-primary-500 text-fontPrimary-50 rounded-full px-6 py-2">
-                  Compra
+                  Comprar
                 </a>
               </div>
             </div>
