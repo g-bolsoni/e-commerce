@@ -43,11 +43,7 @@ export const TokenProvider = ({ children }: { children: React.ReactNode }) => {
     checkTokenExpiration();
   }, []);
 
-  return (
-    <TokenContext.Provider value={{ token, isTokenReady }}>
-      {isTokenReady ? children : <div>Carregando...</div>}
-    </TokenContext.Provider>
-  );
+  return <TokenContext.Provider value={{ token, isTokenReady }}>{isTokenReady ? children : <div>Carregando...</div>}</TokenContext.Provider>;
 };
 
 export const useToken = () => useContext(TokenContext);

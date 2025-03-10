@@ -8,17 +8,28 @@ export const api = axios.create({
 });
 
 export const tokenApi = async () => {
-  const response = await api.post<GetToken>("getToken", {
-    username: "mydevsto_giovane1",
-    password: "YV8b8Dat8W0FAqKNW20QFoAUvCdETgG6ySk82Aa",
-  });
+  try {
+    const response = await api.post<GetToken>("getToken", {
+      username: "mydevsto_giovane1",
+      password: "YV8b8Dat8W0FAqKNW20QFoAUvCdETgG6ySk82Aa",
+    });
 
-  if (response.status != 200) {
-    return {
-      authorization: "",
-      date_expire: "",
+    if (response.status != 200) {
+      return {
+        authorization: "",
+        date_expire: "",
+      };
+    }
+
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+
+    const responseError = {
+      authorization: null,
+      date_expire: null,
     };
-  }
 
-  return response.data.data;
+    return responseError;
+  }
 };
