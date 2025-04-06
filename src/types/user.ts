@@ -1,33 +1,30 @@
 export interface UserLogin {
   success: string;
-  data: Data;
+  data: IUser;
 }
 
-export interface Data {
-  customer_id: number;
-  type_person: string;
+export interface IUser {
+  type_person: "F" | "J";
   firstname: string;
   lastname: string;
   email: string;
-  sex: string;
-  telephone: string;
-  cellphone: string;
   cpf_cnpj: string;
-  rg_ie: string;
-  address_id: number;
-  address: Address[];
-}
-
-export interface Address {
-  address_id: number;
-  firstname: string;
-  lastname: string;
-  address_1: string;
-  address_2: string;
-  number_home: string;
-  neighborhood: string;
-  city: string;
-  postcode: string;
-  country_id: number;
-  zone_id: number;
+  rg_ie?: string;
+  birthday: string;
+  sex: "M" | "F";
+  cellphone: string;
+  telephone?: string;
+  status: "1" | "0";
+  customer_attacked?: "1" | "0";
+  limit_credit?: number;
+  password: string;
+  address?: {
+    firstname?: string;
+    address_1: string;
+    number_home: string;
+    neighborhood: string;
+    city: string;
+    postcode: string;
+    zone_id: string;
+  };
 }

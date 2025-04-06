@@ -14,7 +14,7 @@ export default async function Register() {
         <h2 className="mt-6 text-center text-base md:text-lg font-bold tracking-tight text-primary-900">Crie sua conta </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[720px]">
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[1280px]">
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <RegisterForm />
           <div>
