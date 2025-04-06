@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import debounce from "lodash.debounce";
 import { searchProductsByName } from "@/database/search";
@@ -37,8 +39,8 @@ export const Search = () => {
   }, [searchText]);
 
   // Cancela o debounce ao desmontar o componente
-    useEffect(() => {
-      return () => {
+  useEffect(() => {
+    return () => {
       debouncedSearch.current.cancel();
     };
   }, []);
@@ -51,9 +53,11 @@ export const Search = () => {
   return (
     <li className="search w-6 h-6 justify-start items-start flex relative fill-white md:fill-black lg:ml-6">
       <button type="button" aria-label="Search" onClick={() => setOpenModal(true)}>
-        <MdSearch size={24} color="#000" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black">
+          <path d="M15.7549 14.255H14.9649L14.6849 13.985C15.6649 12.845 16.2549 11.365 16.2549 9.755C16.2549 6.165 13.3449 3.255 9.75488 3.255C6.16488 3.255 3.25488 6.165 3.25488 9.755C3.25488 13.345 6.16488 16.255 9.75488 16.255C11.3649 16.255 12.8449 15.665 13.9849 14.685L14.2549 14.965V15.755L19.2549 20.745L20.7449 19.255L15.7549 14.255ZM9.75488 14.255C7.26488 14.255 5.25488 12.245 5.25488 9.755C5.25488 7.26501 7.26488 5.255 9.75488 5.255C12.2449 5.255 14.2549 7.26501 14.2549 9.755C14.2549 12.245 12.2449 14.255 9.75488 14.255Z" />
+        </svg>
       </button>
-      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-9/12 [&>div>div]:!shadow-none">
+      <Modal dismissible show={openModal} onClose={() => setOpenModal(false)} className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-11/12 [&>div]:p-0 md:p-4 md:[&>div]:w-9/12 [&>div>div]:!shadow-none">
         <div className="flex items-center w-full">
           <label htmlFor="search" className="sr-only">
             Pesquisar
