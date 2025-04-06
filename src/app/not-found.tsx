@@ -18,7 +18,7 @@ export default function NotFoundPage() {
 
         {/* Draggable Astronaut */}
         <div className="relative">
-          <Image src="/images/astronaut.png" alt="Astronaut" width={400} height={400} />
+          <Image src="/images/astronaut.avif" alt="Astronaut" width={400} height={400} />
         </div>
       </div>
     </div>
