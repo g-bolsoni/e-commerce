@@ -10,7 +10,10 @@ export default function Home() {
       </picture>
       <section className="mx-3 md:container md:mx-auto">
         <ProductList />
-        <Image src="/images/lancamento.avif" alt="banner destaques" width={1920} height={600} />
+        <picture>
+          <source media="(max-width: 1023px)" srcSet="/images/m_lancamento.avif" type="image/avif" />
+          <Image src="/images/lancamento.avif" alt="banner destaques" width={1920} height={600} className="w-screen h-full" />
+        </picture>
         <div className="hidden md:grid md:grid-cols-2 md:gap-4">
           <Image src="/images/d_esporte.avif" alt="banner esporte" width={768} height={637} />
           <div className="grid grid-cols-2 gap-4">

@@ -10,7 +10,7 @@ export const Products = ({ products }: { products: ProductInfo[] }) => {
       {products.map((product) => {
         const imageUrl = product.image ? product.image : "/images/no_image.jpg";
         return (
-          <div key={product.product_id} className="product flex flex-col gap-4 relative group/product">
+          <div key={product.product_id} className="product flex flex-col w-full gap-4 relative group/product">
             <div className="rounded-3xl w-full bg-white relative">
               <Link href={`/produto/${product.url}`}>
                 <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">

@@ -9,10 +9,10 @@ export default function NotFoundPage() {
         {/* 404 Text */}
         <div className="text-left max-w-md">
           <h1 className="text-6xl font-bold">404</h1>
-          <p className="text-xl mt-2">Lost in Space</p>
-          <p className="mt-4 text-gray-600">The page you're looking for doesn't exist.</p>
-          <a href="/" className="mt-6 flex justify-center items-center w-40 h-10 bg-black w- text-secondary-200 px-6 py-2 transition-all duration-300 ease-linear rounded-lg border border-black hover:bg-transparent hover:border hover:text-black">
-            Go Home
+          <p className="text-xl mt-2">Perdido no espaço</p>
+          <p className="mt-4 text-gray-600">A página que você procura não existe.</p>
+          <a href="/" className="mt-6 flex justify-center items-center min-w-40 h-10 bg-black w-max text-secondary-200 px-6 py-2 transition-all duration-300 ease-linear rounded-lg border border-black hover:bg-transparent hover:border hover:text-black">
+            Voltar a página inicial
           </a>
         </div>
 
