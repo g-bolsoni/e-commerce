@@ -26,16 +26,16 @@ export default async function RootLayout({ children }: IChildren) {
     <html lang="en">
       <body className={poppins.className}>
         <QueryClientProvider client={queryClient}>
-          <TokenProvider>
-            <Header />
-            <main className="overflow-x-hidden">
-              {children}
-              <div className="newsletter mx-3 md:container md:mx-auto">
-                <Newsletter />
-              </div>
-            </main>
-            <Footer />
-          </TokenProvider>
+          {/* <TokenProvider> */}
+          <Header />
+          <main className="overflow-x-hidden">
+            {children}
+            <div className="newsletter mx-3 md:container md:mx-auto">
+              <Newsletter />
+            </div>
+          </main>
+          <Footer />
+          {/* </TokenProvider> */}
         </QueryClientProvider>
         <ToastContainer />
       </body>

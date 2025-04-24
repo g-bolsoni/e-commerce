@@ -28,9 +28,9 @@ export interface ProductInfo {
   price: string;
   cost_price: string;
   price_sale: string;
-  price_pos: string;
+  price_pos?: string;
   weight: string;
-  weight_class_id: number;
+  weight_class_id?: number;
   length: string;
   width: string;
   height: string;
@@ -46,11 +46,11 @@ export interface ProductInfo {
   product_discount: any[];
   product_option: ProductOption[];
   product_image: ProductImage[];
-  ncm: any;
-  seller: any;
+  ncm?: any;
+  seller?: any;
   url: string;
-  minimum: number;
-  multiple_sales_quantity: number;
+  minimum?: number;
+  multiple_sales_quantity?: number;
   approval_certificate?: string;
 }
 

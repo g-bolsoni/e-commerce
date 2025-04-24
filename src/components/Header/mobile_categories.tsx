@@ -87,7 +87,7 @@ const MobileCategories = ({ categories }: { categories: Category[] }) => {
                   Entar
                 </button>
                 <button type="button" onClick={() => setOpen(false)} className="border border-primary-700 w-1/2 text-primary-700 px-4 py-2 text-sm h-12 rounded-lg">
-                  Cadastre-se
+                  Cadastrar
                 </button>
               </div>
             </div>
