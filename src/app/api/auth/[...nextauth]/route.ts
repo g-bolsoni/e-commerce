@@ -1,5 +1,4 @@
-import { api } from "@/services/api";
-import { UserLogin } from "@/types/user";
+import { loginUser } from "@/services/dummyjson";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -13,49 +12,57 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
-        token: { label: "token", type: "text" },
       },
 
       async authorize(credentials) {
-        if (!this.authorize) return null;
+        if (!credentials?.username || !credentials?.password) {
+          return null;
+        }
 
-        const loginData = {
-          email: credentials?.email,
-          password: credentials?.password,
-        };
+        try {
+          const user = await loginUser(
+            credentials.username,
+            credentials.password,
+          );
 
-        const res = await api.post<UserLogin>("/customer/login", loginData, {
-          headers: {
-            authorization: credentials?.token,
-          },
-        });
+          if (user && user.accessToken) {
+            return {
+              id: user.id.toString(),
+              name: `${user.firstName} ${user.lastName}`,
+              email: user.email,
+              image: user.image,
+            };
+          }
 
-        if (res.data.success == "false") return null;
-
-        const customer_info = res.data.data;
-
-        return {
-          id: customer_info.customer_id.toString(),
-          name: customer_info.firstname,
-          lastname: customer_info.lastname,
-          cpf: customer_info.cpf_cnpj,
-          cellphone: customer_info.cellphone,
-          email: customer_info.email,
-          sex: customer_info.sex,
-        };
+          return null;
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
       },
     }),
   ],
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
+      return !!user;
+    },
+    async jwt({ token, user }) {
       if (user) {
-        return true;
-      } else {
-        return false; // Return false to indicate a failed sign-in attempt
+        token.id = user.id;
       }
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string,
+        },
+      };
     },
   },
 });

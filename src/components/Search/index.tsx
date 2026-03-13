@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import debounce from "lodash.debounce";
-import { searchProducts, formatPrice } from "@/services/dummyjson";
+import {
+  searchProducts,
+  formatPrice,
+  calculateDiscountedPrice,
+} from "@/services/dummyjson";
 import Image from "next/image";
 import { MdClose, MdSearch } from "react-icons/md";
 import { Modal } from "flowbite-react";
@@ -59,114 +63,148 @@ export const Search = () => {
   };
 
   return (
-    <li className="search w-6 h-6 justify-start items-start flex relative fill-white md:fill-black lg:ml-6">
+    <>
+      {/* Search Button */}
       <button
         type="button"
-        aria-label="Search"
+        aria-label="Buscar produtos"
         onClick={() => setOpenModal(true)}
+        className="p-2 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors group"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="black"
-        >
-          <path d="M15.7549 14.255H14.9649L14.6849 13.985C15.6649 12.845 16.2549 11.365 16.2549 9.755C16.2549 6.165 13.3449 3.255 9.75488 3.255C6.16488 3.255 3.25488 6.165 3.25488 9.755C3.25488 13.345 6.16488 16.255 9.75488 16.255C11.3649 16.255 12.8449 15.665 13.9849 14.685L14.2549 14.965V15.755L19.2549 20.745L20.7449 19.255L15.7549 14.255ZM9.75488 14.255C7.26488 14.255 5.25488 12.245 5.25488 9.755C5.25488 7.26501 7.26488 5.255 9.75488 5.255C12.2449 5.255 14.2549 7.26501 14.2549 9.755C14.2549 12.245 12.2449 14.255 9.75488 14.255Z" />
-        </svg>
+        <MdSearch className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-primary-500 transition-colors" />
       </button>
+
+      {/* Search Modal */}
       <Modal
         dismissible
         show={openModal}
         onClose={() => setOpenModal(false)}
-        className="fixed top-2 left-0 right-0 p-4 overflow-x-hidden md:inset-0 h-screen w-screen max-h-full justify-center items-start [&>div>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-11/12 [&>div]:p-0 md:p-4 md:[&>div]:w-9/12 [&>div>div]:!shadow-none"
+        className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-sm [&>div]:!bg-transparent [&>div]:max-w-none [&>div]:w-full [&>div]:h-full [&>div]:p-0 [&>div]:m-0 [&>div>div]:!bg-transparent [&>div>div]:!shadow-none [&>div>div]:h-full"
       >
-        <div className="flex items-center w-full">
-          <label htmlFor="search" className="sr-only">
-            Pesquisar
-          </label>
-          <div className="relative w-full flex">
-            <input
-              type="text"
-              id="search"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg outline-none focus:border-secondary-900 block w-full pl-10 p-2.5"
-              placeholder="Pesquisar produtos..."
-              required
-              autoFocus
-              autoComplete="off"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-            <div className="absolute right-2.5 h-full">
-              {searchText.length > 0 ? (
+        <div className="min-h-full flex flex-col items-center pt-4 sm:pt-8 px-3 sm:px-4">
+          {/* Search Input Container */}
+          <div className="w-full max-w-2xl">
+            <div className="relative">
+              <MdSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                id="search"
+                className="w-full h-12 sm:h-14 bg-white border-0 text-gray-900 text-base sm:text-lg rounded-xl shadow-lg outline-none focus:ring-2 focus:ring-primary-500 pl-12 pr-12 placeholder:text-gray-400"
+                placeholder="O que você está procurando?"
+                autoFocus
+                autoComplete="off"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              {searchText.length > 0 && (
                 <button
                   type="button"
-                  className="p-2.5 ml-2 text-md font-medium text-black"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100 transition-colors"
                   onClick={handleClearSearch}
                 >
-                  <MdClose size={18} color="#000" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="p-2.5 ml-2 text-md font-medium text-black"
-                >
-                  <MdSearch size={18} color="#000" />
-                  <span className="sr-only">Search</span>
+                  <MdClose className="w-5 h-5 text-gray-500" />
                 </button>
               )}
             </div>
           </div>
-        </div>
 
-        <div className="results">
-          {isLoading && (
-            <div className="bg-white p-8 rounded-xl mt-2.5 text-center">
-              <span className="text-gray-500">Buscando...</span>
-            </div>
-          )}
+          {/* Results Container */}
+          <div className="w-full max-w-4xl mt-4">
+            {/* Loading State */}
+            {isLoading && (
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div className="inline-flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                  <span className="text-gray-500">Buscando produtos...</span>
+                </div>
+              </div>
+            )}
 
-          {!isLoading && results.length > 0 && (
-            <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 bg-white p-8 rounded-xl mt-2.5 overflow-y-auto max-h-[70vh]">
-              {results.map((product) => (
-                <li key={product.id} className="block my-2">
-                  <Link
-                    href={`/produto/${product.id}`}
-                    className="flex flex-col items-center justify-start gap-2"
-                    onClick={handleProductClick}
-                  >
-                    <div className="w-full h-full bg-secondary-100 rounded-xl flex items-center justify-center py-5">
-                      <Image
-                        src={product.thumbnail}
-                        alt={product.title}
-                        className="w-full h-full max-w-80 max-h-80 object-contain rounded-lg"
-                        width={320}
-                        height={320}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2 w-full h-20">
-                      <span className="line-clamp-2 text-sm lg:text-md font-semibold">
-                        {product.title}
-                      </span>
-                      <div className="flex gap-2.5 items-center">
-                        <span className="text-md text-primary-500 font-medium">
-                          {formatPrice(product.price)}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+            {/* Results Grid */}
+            {!isLoading && results.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 overflow-y-auto max-h-[70vh]">
+                <p className="text-sm text-gray-500 mb-4">
+                  {results.length} produto{results.length !== 1 ? "s" : ""}{" "}
+                  encontrado{results.length !== 1 ? "s" : ""}
+                </p>
+                <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {results.map((product) => {
+                    const discountedPrice = calculateDiscountedPrice(
+                      product.price,
+                      product.discountPercentage,
+                    );
+                    return (
+                      <li key={product.id}>
+                        <Link
+                          href={`/produto/${product.id}`}
+                          className="group block bg-gray-50 rounded-xl p-3 hover:shadow-md transition-shadow"
+                          onClick={handleProductClick}
+                        >
+                          <div className="aspect-square bg-white rounded-lg flex items-center justify-center p-2 mb-3">
+                            <Image
+                              src={product.thumbnail}
+                              alt={product.title}
+                              className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                              width={200}
+                              height={200}
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <h3 className="text-xs sm:text-sm font-medium text-gray-800 line-clamp-2 leading-tight">
+                              {product.title}
+                            </h3>
+                            <p className="text-sm sm:text-base font-bold text-primary-500">
+                              {formatPrice(discountedPrice)}
+                            </p>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
 
-          {!isLoading && searchText.length > 1 && results.length === 0 && (
-            <div className="bg-white p-8 rounded-xl mt-2.5 text-center">
-              <span className="text-gray-500">Nenhum produto encontrado</span>
-            </div>
-          )}
+            {/* Empty State */}
+            {!isLoading && searchText.length > 1 && results.length === 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <MdSearch className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  Nenhum resultado encontrado
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Tente buscar por outro termo ou categoria
+                </p>
+              </div>
+            )}
+
+            {/* Initial State - Search Suggestions */}
+            {!isLoading && searchText.length <= 1 && (
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <p className="text-sm font-medium text-gray-700 mb-3">
+                  Sugestões populares
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["iPhone", "Laptop", "Perfume", "Skincare", "Sapatos"].map(
+                    (suggestion) => (
+                      <button
+                        key={suggestion}
+                        type="button"
+                        onClick={() => setSearchText(suggestion)}
+                        className="px-3 py-1.5 bg-gray-100 text-sm text-gray-700 rounded-full hover:bg-primary-100 hover:text-primary-600 transition-colors"
+                      >
+                        {suggestion}
+                      </button>
+                    ),
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </Modal>
-    </li>
+    </>
   );
 };

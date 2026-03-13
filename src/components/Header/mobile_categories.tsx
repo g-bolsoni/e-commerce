@@ -2,7 +2,13 @@
 
 import React, { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { MdClose } from "react-icons/md";
+import {
+  MdClose,
+  MdChevronRight,
+  MdFavoriteBorder,
+  MdPersonOutline,
+  MdHelpOutline,
+} from "react-icons/md";
 import Link from "next/link";
 
 interface Category {
@@ -14,86 +20,111 @@ interface Category {
 
 const MobileCategories = ({ categories }: { categories: Category[] }) => {
   const [open, setOpen] = useState(false);
+
   return (
     <>
-      {/* Mobile menu */}
-      <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
+      {/* Mobile Menu Dialog */}
+      <Dialog open={open} onClose={setOpen} className="relative z-50 lg:hidden">
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-out data-[closed]:opacity-0"
         />
-        <div className="fixed inset-0 z-40 flex w-11/12">
+
+        <div className="fixed inset-0 z-50 flex">
           <DialogPanel
             transition
-            className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white rounded-r-2xl shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full"
+            className="relative flex w-full max-w-[280px] sm:max-w-xs transform flex-col bg-white shadow-2xl transition-all duration-300 ease-out data-[closed]:-translate-x-full"
           >
-            <div className="menu-header border-b border-gray-300">
-              <div className="p-4">
-                <div className="flex justify-between px-7 py-4 rounded-lg bg-black/10">
-                  <span>Menu</span>
-                  <button
-                    type="button"
-                    onClick={() => setOpen(false)}
-                    className="relative -m-2 overflow-y-hidden inline-flex items-center justify-center rounded-md p-2 text-gray-400"
-                  >
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Close menu</span>
-                    <MdClose size={24} color="#000" />
-                  </button>
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
+              <span className="text-lg font-semibold text-gray-900">Menu</span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="p-2 -mr-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <MdClose className="w-5 h-5 text-gray-500" />
+                <span className="sr-only">Fechar menu</span>
+              </button>
+            </div>
+
+            {/* User Section */}
+            <div className="px-4 py-4 bg-gradient-to-r from-primary-500 to-primary-600">
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 text-white"
+              >
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                  <MdPersonOutline className="w-6 h-6" />
                 </div>
+                <div>
+                  <p className="font-medium">Olá, visitante!</p>
+                  <p className="text-sm text-white/80">Entre ou cadastre-se</p>
+                </div>
+                <MdChevronRight className="w-5 h-5 ml-auto" />
+              </Link>
+            </div>
+
+            {/* Categories */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="py-2">
+                <p className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  Categorias
+                </p>
+                <nav className="space-y-0.5">
+                  {categories.map((category) => (
+                    <Link
+                      key={category.category_id}
+                      href={`/categoria/${category.slug}`}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                    >
+                      <span className="capitalize">{category.name}</span>
+                      <MdChevronRight className="w-5 h-5 text-gray-400" />
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Quick Links */}
+              <div className="py-2 border-t border-gray-100">
+                <p className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  Atalhos
+                </p>
+                <Link
+                  href="/minha-conta/favoritos"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <MdFavoriteBorder className="w-5 h-5 text-gray-400" />
+                  <span>Meus Favoritos</span>
+                </Link>
+                <Link
+                  href="/ajuda"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <MdHelpOutline className="w-5 h-5 text-gray-400" />
+                  <span>Central de Ajuda</span>
+                </Link>
               </div>
             </div>
 
-            {/* Links */}
-            <div className="cart-body flex-1 overflow-y-auto">
-              <nav className="flex flex-col">
-                {categories.map((category) => (
-                  <Link
-                    key={category.category_id}
-                    href={`/categoria/${category.slug}`}
-                    onClick={() => setOpen(false)}
-                    className="min-h-14 flex items-center whitespace-nowrap border-b border-primary-200 w-full text-start hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="px-4 text-sm capitalize font-medium text-gray-700">
-                      {category.name}
-                    </span>
-                  </Link>
-                ))}
-              </nav>
-            </div>
-
-            <div className="cart-footer border-t border-gray-300 px-4 py-4 space-y-4">
-              <Link
-                href="/minha-conta"
-                onClick={() => setOpen(false)}
-                className="flex items-center bg-black/10 rounded-lg gap-4 h-12 justify-start px-4 py-2 text-sm text-gray-700 font-normal"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="16"
-                  viewBox="0 0 18 16"
-                  fill="none"
-                >
-                  <path
-                    d="M9 16.0019L8.24225 15.3174C6.61025 13.8264 5.26025 12.5501 4.19225 11.4886C3.12442 10.4269 2.2815 9.49069 1.6635 8.67986C1.0455 7.86902 0.61375 7.13536 0.36825 6.47886C0.12275 5.82252 0 5.16227 0 4.49811C0 3.22627 0.432084 2.15836 1.29625 1.29436C2.16025 0.430191 3.22817 -0.00189209 4.5 -0.00189209C5.3795 -0.00189209 6.2045 0.223108 6.975 0.673108C7.7455 1.12311 8.4205 1.77761 9 2.63661C9.5795 1.77761 10.2545 1.12311 11.025 0.673108C11.7955 0.223108 12.6205 -0.00189209 13.5 -0.00189209C14.7718 -0.00189209 15.8398 0.430191 16.7038 1.29436C17.5679 2.15836 18 3.22627 18 4.49811C18 5.16227 17.8773 5.82252 17.6318 6.47886C17.3863 7.13536 16.9545 7.86902 16.3365 8.67986C15.7185 9.49069 14.8787 10.4269 13.8173 11.4886C12.7558 12.5501 11.4026 13.8264 9.75775 15.3174L9 16.0019ZM9 14.6481C10.6 13.2019 11.9167 11.9632 12.95 10.9319C13.9833 9.90036 14.8 9.00544 15.4 8.24711C16 7.48878 16.4167 6.81702 16.65 6.23186C16.8833 5.64652 17 5.06861 17 4.49811C17 3.49811 16.6667 2.66477 16 1.99811C15.3333 1.33144 14.5 0.998108 13.5 0.998108C12.7038 0.998108 11.9692 1.22536 11.2962 1.67986C10.6231 2.13436 10.0205 2.81861 9.4885 3.73261H8.5115C7.96667 2.80577 7.36092 2.11827 6.69425 1.67011C6.02758 1.22211 5.29617 0.998108 4.5 0.998108C3.51283 0.998108 2.68267 1.33144 2.0095 1.99811C1.3365 2.66477 1 3.49811 1 4.49811C1 5.06861 1.11667 5.64652 1.35 6.23186C1.58333 6.81702 2 7.48878 2.6 8.24711C3.2 9.00544 4.01667 9.89711 5.05 10.9221C6.08333 11.9471 7.4 13.1891 9 14.6481Z"
-                    fill="black"
-                  />
-                </svg>
-                Favoritos
-              </Link>
-              <div className="flex justify-between gap-4">
+            {/* Footer */}
+            <div className="border-t border-gray-100 p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="bg-primary-700 w-1/2 text-white px-4 py-2 h-12 rounded-lg flex items-center justify-center"
+                  className="flex items-center justify-center h-11 bg-primary-500 text-white text-sm font-medium rounded-lg hover:bg-primary-600 active:scale-[0.98] transition-all"
                 >
                   Entrar
                 </Link>
                 <Link
                   href="/registro"
                   onClick={() => setOpen(false)}
-                  className="border border-primary-700 w-1/2 text-primary-700 px-4 py-2 text-sm h-12 rounded-lg flex items-center justify-center"
+                  className="flex items-center justify-center h-11 border-2 border-primary-500 text-primary-500 text-sm font-medium rounded-lg hover:bg-primary-50 active:scale-[0.98] transition-all"
                 >
                   Cadastrar
                 </Link>
@@ -102,20 +133,26 @@ const MobileCategories = ({ categories }: { categories: Category[] }) => {
           </DialogPanel>
         </div>
       </Dialog>
+
+      {/* Hamburger Button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative w-6 h-6 rounded-md overflow-y-hidden bg-white text-gray-400 lg:hidden"
+        className="p-2 -ml-2 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors lg:hidden"
+        aria-label="Abrir menu"
       >
-        <span className="sr-only">Open menu</span>
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
           viewBox="0 0 24 24"
-          fill="black"
         >
-          <path d="M3 18H21V16H3V18ZM3 13H21V11H3V13ZM3 6V8H21V6H3Z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
       </button>
     </>

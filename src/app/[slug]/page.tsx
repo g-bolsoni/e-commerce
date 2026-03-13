@@ -1,25 +1,43 @@
-import { Products } from "@/components/Product";
-import { getProductsByCategory } from "@/database/categories";
+import { ProductGrid } from "@/components/ProductCard";
+import { getProductsByCategory, getCategories } from "@/services/dummyjson";
+import { notFound } from "next/navigation";
 
 interface CategoryPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const CategoryPage = async ({ params }: CategoryPageProps) => {
-  const products = await getProductsByCategory(params.slug);
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { slug } = await params;
 
-  if (!products || products.length === 0) {
-    return <div>Nenhum produto encontrado para a categoria: {params.slug}</div>;
+  // Verifica se a categoria existe
+  const categories = await getCategories();
+  const categoryExists = categories.some((cat) => cat.slug === slug);
+
+  if (!categoryExists) {
+    notFound();
+  }
+
+  const response = await getProductsByCategory(slug, 20);
+
+  if (!response.products || response.products.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl text-gray-900 capitalize font-bold mb-6">
+          {slug.replace(/-/g, " ")}
+        </h1>
+        <p className="text-gray-500">
+          Nenhum produto encontrado nesta categoria.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-xl leading-6 md:text-4xl md:leading-9 text-secondary-900 capitalize font-bold my-8">{params.slug}</h1>
-      <div className="products w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-items-center lg:justify-items-center gap-16 md:gap-16 px-4 py-4 md:px-0">
-        <Products products={products} />
-      </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-xl sm:text-2xl lg:text-3xl text-gray-900 capitalize font-bold mb-6">
+        {slug.replace(/-/g, " ")}
+      </h1>
+      <ProductGrid products={response.products} />
     </div>
   );
-};
-
-export default CategoryPage;
+}
