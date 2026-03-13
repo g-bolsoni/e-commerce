@@ -5,7 +5,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "img.irroba.com.br",
+        hostname: "cdn.dummyjson.com",
+      },
+      {
+        protocol: "https",
+        hostname: "dummyjson.com",
       },
     ],
   },
