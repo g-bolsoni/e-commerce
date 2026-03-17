@@ -62,13 +62,13 @@ img {
 }
 
 /* Botões com área de toque adequada */
-button,
-a {
+flex sm:hidden gap-2 overflow-x-auto p-2 scrollbar-hidebutton:not(.no-min),
+a:not(.no-min) {
   min-height: 44px;
   min-width: 44px;
 }
 
-button:not(.no-min) {
+button {
   @apply touch-manipulation;
 }
 
@@ -123,6 +123,16 @@ button:not(.no-min) {
   /* Texto truncado responsivo */
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Esconder scrollbar mas manter funcionalidade */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 
