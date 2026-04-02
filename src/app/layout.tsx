@@ -8,6 +8,7 @@ import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import Header from "@/components/Header";
+import CartProviderWrapper from "./CartProviderWrapper";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -52,17 +53,29 @@ export default function RootLayout({ children }: IChildren) {
     <html lang="pt-BR">
       <body className={poppins.className}>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<HeaderSkeleton />}>
-            <Header />
-          </Suspense>
-          <main className="overflow-x-hidden">
-            {children}
-            <div className="newsletter mx-3 md:container md:mx-auto">
-              <Newsletter />
-            </div>
-          </main>
-          <ToastContainer />
-          <Footer />
+          <CartProviderWrapper>
+            <Suspense fallback={<HeaderSkeleton />}>
+              <Header />
+            </Suspense>
+            <main className="overflow-x-hidden">
+              {children}
+              <div className="newsletter mx-3 md:container md:mx-auto">
+                <Newsletter />
+              </div>
+            </main>
+            <ToastContainer
+              stacked
+              limit={2}
+              position="top-right"
+              autoClose={3500}
+              closeOnClick
+              draggable
+              pauseOnHover
+              style={{ width: "100vw", maxWidth: 400 }}
+              toastStyle={{ fontSize: 14, minHeight: 40, borderRadius: 10 }}
+            />
+            <Footer />
+          </CartProviderWrapper>
         </QueryClientProvider>
       </body>
     </html>
