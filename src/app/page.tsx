@@ -85,8 +85,8 @@ export default async function Home() {
               className="w-full h-auto aspect-square object-cover rounded-xl lg:rounded-2xl"
             />
             <Image
-              src="/images/d_casual.avif"
-              alt="banner casual"
+              src="/images/d_infantil.avif"
+              alt="banner infantil"
               width={300}
               height={300}
               className="w-full h-auto aspect-square object-cover rounded-xl lg:rounded-2xl"
