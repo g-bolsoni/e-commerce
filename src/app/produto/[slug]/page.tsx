@@ -18,6 +18,8 @@ import {
 import { ProductListCarousel } from "@/components/ProductCard";
 import { ImageGallery } from "./ImageGallery";
 import { ReviewsSection } from "./ReviewsSection";
+import { AddToCartButton } from "./AddToCartButton";
+import { BuyNowButton } from "./BuyNowButton";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -131,17 +133,17 @@ export default async function ProductPage({ params }: Props) {
             </div>
 
             {/* Título */}
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 leading-snug">
+            <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 leading-snug">
               {product.title}
             </h1>
 
             {/* Rating */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <svg
                     key={star}
-                    className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                       star <= Math.round(product.rating)
                         ? "text-amber-400"
                         : "text-gray-200"
@@ -153,43 +155,43 @@ export default async function ProductPage({ params }: Props) {
                   </svg>
                 ))}
               </div>
-              <span className="text-sm sm:text-base font-medium text-gray-700">
+              <span className="text-xs sm:text-sm font-medium text-gray-700">
                 {product.rating.toFixed(1)}
               </span>
               <a
                 href="#avaliacoes"
-                className="text-sm text-primary-500 hover:underline"
+                className="text-xs text-primary-500 hover:underline"
               >
                 ({product.reviews.length} avaliações)
               </a>
               {product.stock > 0 && product.stock <= 10 && (
-                <span className="ml-auto text-xs sm:text-sm text-orange-600 font-medium bg-orange-50 px-2 py-1 rounded-full">
+                <span className="ml-auto text-xs text-orange-600 font-medium bg-orange-50 px-2 py-1 rounded-full">
                   🔥 Restam {product.stock}!
                 </span>
               )}
             </div>
 
             {/* Bloco de Preço */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
-              <div className="space-y-2">
+            <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
+              <div className="space-y-1.5">
                 {hasDiscount && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-base sm:text-lg text-gray-400 line-through">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs sm:text-sm text-gray-400 line-through">
                       {formatPrice(product.price)}
                     </span>
-                    <span className="bg-red-100 text-red-600 text-xs sm:text-sm font-bold px-2 py-0.5 rounded">
+                    <span className="bg-red-100 text-red-600 text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
                       -{Math.round(product.discountPercentage)}%
                     </span>
                   </div>
                 )}
-                <p className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900">
+                <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
                   {formatPrice(discountedPrice)}
                 </p>
               </div>
 
               {/* Opções de Pagamento */}
               <div className="mt-4 space-y-3">
-                <div className="flex items-center gap-2 text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <MdPix className="w-5 h-5 text-teal-500" />
                   <span className="text-gray-600">No Pix:</span>
                   <span className="font-bold text-teal-600">
@@ -199,7 +201,7 @@ export default async function ProductPage({ params }: Props) {
                     5% OFF
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <MdCreditCard className="w-5 h-5 text-gray-400" />
                   <span className="text-gray-600">
                     ou <strong>12x</strong> de{" "}
@@ -213,7 +215,7 @@ export default async function ProductPage({ params }: Props) {
             {/* Disponibilidade */}
             <div className="flex items-center gap-3">
               <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold ${
+                className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-semibold ${
                   product.stock > 0
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
@@ -224,19 +226,13 @@ export default async function ProductPage({ params }: Props) {
                 />
                 {product.availabilityStatus}
               </span>
-              <span className="text-xs sm:text-sm text-gray-500">
-                SKU: {product.sku}
-              </span>
+              <span className="text-xs text-gray-500">SKU: {product.sku}</span>
             </div>
 
             {/* Botões de Ação */}
-            <div className="flex flex-col gap-3">
-              <button className="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:from-primary-600 hover:to-primary-700 transition-all active:scale-[0.98] shadow-lg shadow-primary-500/25">
-                Comprar Agora
-              </button>
-              <button className="w-full bg-white text-primary-600 py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg border-2 border-primary-500 hover:bg-primary-50 transition-all active:scale-[0.98]">
-                Adicionar ao Carrinho
-              </button>
+            <div className="flex flex-col gap-2 sm:gap-3 lg:flex-row lg:gap-3 mt-2 mb-2">
+              <BuyNowButton productId={product.id} />
+              <AddToCartButton productId={product.id} />
             </div>
 
             {/* Informações de Entrega e Garantia */}
@@ -283,20 +279,20 @@ export default async function ProductPage({ params }: Props) {
             </div>
 
             {/* Descrição */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
-              <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
+            <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100">
+              <h2 className="text-sm sm:text-base font-bold text-gray-900 mb-2">
                 Descrição do Produto
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 {product.description}
               </p>
 
               {/* Especificações */}
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                <h3 className="text-xs font-semibold text-gray-900 mb-2">
                   Especificações
                 </h3>
-                <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs sm:text-sm">
                   <dt className="text-gray-500">Peso</dt>
                   <dd className="text-gray-900 font-medium">
                     {product.weight}g

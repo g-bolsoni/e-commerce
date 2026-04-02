@@ -26,3 +26,23 @@ export async function searchProductByUrl(url: string) {
     return [];
   }
 }
+
+export async function searchProductById(productId: number) {
+  try {
+    if (!productId || typeof productId !== "number") {
+      throw new Error("ID do produto inválido");
+    }
+
+    const product = await Product.findOne({ product_id: productId });
+
+    if (!product) {
+      return null;
+    }
+
+    return JSON.parse(JSON.stringify(product));
+  } catch (e) {
+    error("Erro ao buscar produto pelo ID:");
+    error(e);
+    return null;
+  }
+}

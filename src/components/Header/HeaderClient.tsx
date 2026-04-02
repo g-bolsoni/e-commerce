@@ -1,35 +1,23 @@
-"use client";
-import { useEffect, useState } from "react";
-import Cart from "./cart";
-import { MdPersonOutline } from "react-icons/md";
-import Link from "next/link";
-import DesktopCategories from "./desktop_categories";
-import MobileCategories from "./mobile_categories";
 interface Category {
   category_id: number;
   name: string;
   slug: string;
   children: Category[];
 }
+
+interface HeaderClientProps {
+  categories: Category[];
+}
+("use client");
+import Cart from "./cart";
+import { MdPersonOutline } from "react-icons/md";
+import Link from "next/link";
+import DesktopCategories from "./desktop_categories";
+import MobileCategories from "./mobile_categories";
 import { Search } from "../Search";
 import Image from "next/image";
-import { getCategories } from "@/services/dummyjson";
 
-export default function Header() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(
-        data.slice(0, 8).map((cat: any, index: number) => ({
-          category_id: index + 1,
-          name: cat.name,
-          slug: cat.slug,
-          children: [],
-        })),
-      );
-    });
-  }, []);
-
+export default function HeaderClient({ categories }: HeaderClientProps) {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Top bar - apenas desktop */}

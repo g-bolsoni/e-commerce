@@ -61,9 +61,9 @@ export default function RootLayout({ children }: IChildren) {
               <Newsletter />
             </div>
           </main>
+          <ToastContainer />
           <Footer />
         </QueryClientProvider>
-        <ToastContainer />
       </body>
     </html>
   );

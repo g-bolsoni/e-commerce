@@ -3,9 +3,16 @@
 import React, { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { MdClose, MdShoppingCart, MdRemoveShoppingCart } from "react-icons/md";
+import { useCart } from "@/hooks/useCart";
 
 const Cart = () => {
   const [open, setOpen] = useState(false);
+  const { cart = [], removeProduct, updateProductAmount } = useCart();
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.amount,
+    0,
+  );
 
   return (
     <>
@@ -17,10 +24,11 @@ const Cart = () => {
         aria-label="Abrir carrinho"
       >
         <MdShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-primary-500 transition-colors" />
-        {/* Badge - mostra quando tiver itens */}
-        {/* <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-          2
-        </span> */}
+        {cart.length > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+            {cart.length}
+          </span>
+        )}
       </button>
 
       {/* Cart Drawer */}
@@ -33,7 +41,7 @@ const Cart = () => {
         <div className="fixed inset-0 z-50 flex justify-end">
           <DialogPanel
             transition
-            className="relative flex w-full max-w-[320px] sm:max-w-sm transform flex-col bg-white shadow-2xl transition-all duration-300 ease-out data-[closed]:translate-x-full"
+            className="relative flex w-full max-w-[320px] sm:max-w-sm lg:max-w-[380px] xl:max-w-[420px] 2xl:max-w-[440px] transform flex-col bg-white shadow-2xl transition-all duration-300 ease-out data-[closed]:translate-x-full border-l border-gray-200"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
@@ -53,17 +61,77 @@ const Cart = () => {
               </button>
             </div>
 
-            {/* Cart Body - Empty State */}
-            <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-              <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                <MdRemoveShoppingCart className="w-10 h-10 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
-                Carrinho vazio
-              </h3>
-              <p className="text-sm text-gray-500 text-center">
-                Adicione produtos ao seu carrinho para continuar comprando
-              </p>
+            {/* Cart Body */}
+            <div className="flex-1 flex flex-col px-2 sm:px-4 py-4 gap-4 overflow-y-auto overflow-x-hidden">
+              {cart.length === 0 ? (
+                <div className="flex flex-col items-center justify-center flex-1">
+                  <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                    <MdRemoveShoppingCart className="w-10 h-10 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">
+                    Carrinho vazio
+                  </h3>
+                  <p className="text-sm text-gray-500 text-center">
+                    Adicione produtos ao seu carrinho para continuar comprando
+                  </p>
+                </div>
+              ) : (
+                cart.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-2 sm:gap-3 border-b border-gray-100 pb-3 last:border-b-0 last:pb-0"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded"
+                    />
+                    <div className="w-full max-w-[calc(100%-48px)] sm:max-w-[calc(100%-56px)]">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-medium text-gray-900 text-xs sm:text-sm truncate">
+                          {item.title}
+                        </span>
+                        <button
+                          onClick={() => removeProduct(item.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <MdClose className="w-4 h-4 sm:w-5 sm:h-5" />
+                        </button>
+                      </div>
+                      <div className="text-[11px] sm:text-xs text-gray-500">
+                        R$ {item.price.toFixed(2)}
+                      </div>
+                      <div className="flex items-center gap-1 sm:gap-2 mt-1">
+                        <button
+                          onClick={() =>
+                            updateProductAmount({
+                              productId: item.id,
+                              amount: item.amount - 1,
+                            })
+                          }
+                          className="px-2 py-1 bg-gray-200 rounded text-xs"
+                        >
+                          -
+                        </button>
+                        <span className="text-xs sm:text-sm font-semibold">
+                          {item.amount}
+                        </span>
+                        <button
+                          onClick={() =>
+                            updateProductAmount({
+                              productId: item.id,
+                              amount: item.amount + 1,
+                            })
+                          }
+                          className="px-2 py-1 bg-gray-200 rounded text-xs"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
             {/* Footer */}
@@ -71,7 +139,9 @@ const Cart = () => {
               {/* Subtotal */}
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-semibold text-gray-900">R$ 0,00</span>
+                <span className="font-semibold text-gray-900">
+                  R$ {subtotal.toFixed(2)}
+                </span>
               </div>
 
               {/* Frete info */}
@@ -85,7 +155,7 @@ const Cart = () => {
                   type="button"
                   onClick={() => setOpen(false)}
                   className="w-full h-11 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled
+                  disabled={cart.length === 0}
                 >
                   Finalizar Compra
                 </button>
