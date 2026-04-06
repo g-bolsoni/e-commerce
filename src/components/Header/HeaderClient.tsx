@@ -1,3 +1,14 @@
+"use client";
+
+import Cart from "./cart";
+import { MdPersonOutline } from "react-icons/md";
+import Link from "next/link";
+import DesktopCategories from "./desktop_categories";
+import MobileCategories from "./mobile_categories";
+import { Search } from "../Search";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 interface Category {
   category_id: number;
   name: string;
@@ -8,16 +19,10 @@ interface Category {
 interface HeaderClientProps {
   categories: Category[];
 }
-("use client");
-import Cart from "./cart";
-import { MdPersonOutline } from "react-icons/md";
-import Link from "next/link";
-import DesktopCategories from "./desktop_categories";
-import MobileCategories from "./mobile_categories";
-import { Search } from "../Search";
-import Image from "next/image";
 
 export default function HeaderClient({ categories }: HeaderClientProps) {
+  const { data: session } = useSession();
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Top bar - apenas desktop */}
@@ -74,13 +79,33 @@ export default function HeaderClient({ categories }: HeaderClientProps) {
 
               {/* Account - desktop */}
               <div className="hidden lg:flex items-center">
-                <Link
-                  href="/login"
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
-                >
-                  <MdPersonOutline className="w-5 h-5" />
-                  <span>Entrar</span>
-                </Link>
+                {session?.user ? (
+                  <Link
+                    href="/minha-conta"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
+                  >
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt="Perfil"
+                        width={28}
+                        height={28}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <MdPersonOutline className="w-5 h-5" />
+                    )}
+                    <span>Olá, {session.user.name?.split(" ")[0]}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
+                  >
+                    <MdPersonOutline className="w-5 h-5" />
+                    <span>Entrar</span>
+                  </Link>
+                )}
               </div>
 
               {/* Cart */}

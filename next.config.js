@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "dummyjson.com",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };

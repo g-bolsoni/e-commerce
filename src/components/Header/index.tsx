@@ -14,9 +14,12 @@ interface Category {
 import { Search } from "../Search";
 import Image from "next/image";
 import { getCategories } from "@/services/dummyjson";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const { data: session } = useSession();
+
   useEffect(() => {
     getCategories().then((data) => {
       setCategories(
@@ -86,13 +89,33 @@ export default function Header() {
 
               {/* Account - desktop */}
               <div className="hidden lg:flex items-center">
-                <Link
-                  href="/login"
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
-                >
-                  <MdPersonOutline className="w-5 h-5" />
-                  <span>Entrar</span>
-                </Link>
+                {session?.user ? (
+                  <Link
+                    href="/minha-conta"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
+                  >
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt="Perfil"
+                        width={28}
+                        height={28}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <MdPersonOutline className="w-5 h-5" />
+                    )}
+                    <span>Olá, {session.user.name?.split(" ")[0]}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors rounded-lg hover:bg-gray-50"
+                  >
+                    <MdPersonOutline className="w-5 h-5" />
+                    <span>Entrar</span>
+                  </Link>
+                )}
               </div>
 
               {/* Cart */}

@@ -1,10 +1,11 @@
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import FormEmailPassword from "./FormEmailPassword";
 import { redirect } from "next/navigation";
 import GoogleButton from "./GoogleButton";
 
 export default async function Login() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (session) redirect("/minha-conta");
 

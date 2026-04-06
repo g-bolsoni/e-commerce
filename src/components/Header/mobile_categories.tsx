@@ -10,6 +10,8 @@ import {
   MdHelpOutline,
 } from "react-icons/md";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 interface Category {
   category_id: number;
@@ -20,6 +22,7 @@ interface Category {
 
 const MobileCategories = ({ categories }: { categories: Category[] }) => {
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <>
@@ -50,20 +53,53 @@ const MobileCategories = ({ categories }: { categories: Category[] }) => {
 
             {/* User Section */}
             <div className="px-4 py-4 bg-gradient-to-r from-primary-500 to-primary-600">
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-3 text-white"
-              >
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <MdPersonOutline className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="font-medium">Olá, visitante!</p>
-                  <p className="text-sm text-white/80">Entre ou cadastre-se</p>
-                </div>
-                <MdChevronRight className="w-5 h-5 ml-auto" />
-              </Link>
+              {session?.user ? (
+                <Link
+                  href="/minha-conta"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 text-white"
+                >
+                  <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt="Foto de perfil"
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-white/20 flex items-center justify-center">
+                        <MdPersonOutline className="w-6 h-6" />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-medium">
+                      Bem-vindo, {session.user.name?.split(" ")[0]}
+                    </p>
+                    <p className="text-sm text-white/80">Acesse sua conta</p>
+                  </div>
+                  <MdChevronRight className="w-5 h-5 ml-auto" />
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 text-white"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <MdPersonOutline className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Olá, visitante!</p>
+                    <p className="text-sm text-white/80">
+                      Entre ou cadastre-se
+                    </p>
+                  </div>
+                  <MdChevronRight className="w-5 h-5 ml-auto" />
+                </Link>
+              )}
             </div>
 
             {/* Categories */}
@@ -112,24 +148,17 @@ const MobileCategories = ({ categories }: { categories: Category[] }) => {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-gray-100 p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+            {!session?.user && (
+              <div className="border-t border-gray-100 p-4">
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-center h-11 bg-primary-500 text-white text-sm font-medium rounded-lg hover:bg-primary-600 active:scale-[0.98] transition-all"
+                  className="flex items-center justify-center h-11 w-full bg-primary-500 text-white text-sm font-medium rounded-lg hover:bg-primary-600 active:scale-[0.98] transition-all"
                 >
-                  Entrar
-                </Link>
-                <Link
-                  href="/registro"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-center h-11 border-2 border-primary-500 text-primary-500 text-sm font-medium rounded-lg hover:bg-primary-50 active:scale-[0.98] transition-all"
-                >
-                  Cadastrar
+                  Entrar ou cadastrar-se
                 </Link>
               </div>
-            </div>
+            )}
           </DialogPanel>
         </div>
       </Dialog>
