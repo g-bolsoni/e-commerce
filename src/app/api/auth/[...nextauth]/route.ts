@@ -1,6 +1,6 @@
-import { loginUser } from "@/services/dummyjson";
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 
 const handler = NextAuth({
   pages: {
@@ -9,39 +9,13 @@ const handler = NextAuth({
   },
 
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-
-      async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
-          return null;
-        }
-
-        try {
-          const user = await loginUser(
-            credentials.username,
-            credentials.password,
-          );
-
-          if (user && user.accessToken) {
-            return {
-              id: user.id.toString(),
-              name: `${user.firstName} ${user.lastName}`,
-              email: user.email,
-              image: user.image,
-            };
-          }
-
-          return null;
-        } catch (error) {
-          console.error("Auth error:", error);
-          return null;
-        }
-      },
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
   ],
 

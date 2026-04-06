@@ -32,15 +32,14 @@ const FormEmailPassword = () => {
       redirect: false,
     });
 
-    if (result?.error) {
-      toast.error("Erro ao tentar fazer o login");
-    } else {
-      toast.success("Login realizado com sucesso");
-      setTimeout(() => {
-        window.location.href = "/minha-conta";
-      }, 2000);
-    }
+    if (result?.error) return toast.error("Erro ao tentar fazer o login");
+
+    toast.success("Login realizado com sucesso");
+    setTimeout(() => {
+      window.location.href = "/minha-conta";
+    }, 2000);
   };
+
   return (
     <form action={handleLogin} className="space-y-6">
       <div>
