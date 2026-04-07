@@ -83,7 +83,7 @@ export const Search = () => {
       >
         <div className="min-h-full flex flex-col items-center pt-4 sm:pt-8 px-3 sm:px-4">
           {/* Search Input Container */}
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-4xl">
             <div className="relative">
               <MdSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
