@@ -1,5 +1,6 @@
 "use client";
 import { CartProvider } from "@/hooks/useCart";
+import { FavoritesProvider } from "@/hooks/useFavorites";
 import { SessionProvider } from "next-auth/react";
 
 export default function CartProviderWrapper({
@@ -9,7 +10,9 @@ export default function CartProviderWrapper({
 }) {
   return (
     <SessionProvider>
-      <CartProvider>{children}</CartProvider>
+      <CartProvider>
+        <FavoritesProvider>{children}</FavoritesProvider>
+      </CartProvider>
     </SessionProvider>
   );
 }
